@@ -1,35 +1,52 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import "./App.css";
+// import Welcome from "./Pages/Welcome";
+import Login from "./pages/auth/Login";
+import { Home } from "./pages/client/Home";
+import { NoAuthenticated } from "./routes/NoAuthenticated";
+import { Lowongan } from "./pages/client/Lowongan";
+import { Faq } from "./pages/client/Faq";
+import { Dashboard } from "./pages/dashboard/Dashboard";
+
+const ErrorPage = () => {
+    return (
+        <>
+            <h1>404 - Page Not Found</h1>
+            <p>Sorry, the page you are looking for could not be found.</p>
+        </>
+    );
+};
 
 function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    return (
+        <>
+            <BrowserRouter>
+                {/* <MainProvider> */}
+                <Routes>
+                    <Route path="/" element={<Home></Home>}></Route>
+                    <Route
+                        path="/lowongan"
+                        element={<Lowongan></Lowongan>}
+                    ></Route>
+                    <Route path="/faq" element={<Faq></Faq>}></Route>
+                    <Route
+                        path="/login"
+                        element={
+                            <NoAuthenticated>
+                                <Login></Login>
+                            </NoAuthenticated>
+                        }
+                    ></Route>
+                    <Route
+                        path="/dashboard"
+                        element={<Dashboard></Dashboard>}
+                    ></Route>
+                    <Route path="*" element={<ErrorPage />}></Route>
+                </Routes>
+                {/* </MainProvider> */}
+            </BrowserRouter>
+        </>
+    );
 }
 
-export default App
+export default App;
