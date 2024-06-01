@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 export const ButtonPagination = ({
     from,
     to,
@@ -16,7 +18,7 @@ export const ButtonPagination = ({
             <span className="text-sm font-normal text-gray-500 mb-4 md:mb-0 block w-full md:inline md:w-auto">
                 Menampilkan&nbsp;
                 <span className="font-semibold text-gray-900">
-                    {from}-{to}
+                    {from == null ? 0 : from} - {to == null ? 0 : to}
                 </span>
                 &nbsp;dari&nbsp;
                 <span className="font-semibold text-gray-900">{total}</span>

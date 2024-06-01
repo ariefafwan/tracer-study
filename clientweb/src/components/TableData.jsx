@@ -81,7 +81,7 @@ export const TableData = ({
                         </div>
                     </div>
                 </caption>
-                <thead className="text-xs text-black uppercase bg-cyan-500">
+                <thead className="text-xs text-black uppercase bg-teal-500">
                     <tr>
                         <th scope="col" className="px-6 py-3">
                             No.

@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('master_dosen', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignId('id_user')->constrained('users')->references('id')->onDelete('restrict')->onUpdate('cascade');
             $table->foreignUuid('id_program_studi')->constrained('master_program_studi')->references('id')->onDelete('restrict')->onUpdate('cascade');
             $table->string('nama');
-            $table->enum('jenis_kelamin', ['Laki-Laki', 'Perempuan']);
             $table->bigInteger('nidn')->nullable();
+            $table->bigInteger('nik');
+            $table->enum('jenis_kelamin', ['Laki-Laki', 'Perempuan']);
+            $table->enum('status', ['Aktif', 'Nonaktif']);
             $table->timestamps();
         });
     }

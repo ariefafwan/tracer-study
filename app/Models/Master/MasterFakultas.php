@@ -14,6 +14,11 @@ class MasterFakultas extends Model
     protected $table = 'master_fakultas';
     protected $primaryKey = 'id';
 
+    public function dataProdi()
+    {
+        return $this->hasMany(MasterProgramStudi::class, 'id_fakultas', 'id');
+    }
+
     public function scopeSearch($query, $term)
     {
         $term = "%$term%";

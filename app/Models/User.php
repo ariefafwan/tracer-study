@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Models\Master\MasterAlumni;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -42,15 +44,5 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
-    }
-
-    public function scopeSearch($query, $term)
-    {
-        $term = "%$term%";
-
-        $query->where(function ($query) use ($term) {
-            $query->where('name', 'like', $term)
-                ->orWhere('email', 'like', $term);
-        });
     }
 }

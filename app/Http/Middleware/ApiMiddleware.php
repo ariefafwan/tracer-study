@@ -22,6 +22,8 @@ class ApiMiddleware
         } catch (JWTException $e) {
             if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) {
                 return response()->json(['error' => 'Token is Invalid'], 403);
+            } else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
+                return response()->json(['error' => 'Token is Expired'], 403);
             } else {
                 return response()->json(['error' => 'Authorization Token not found'], 403);
             }

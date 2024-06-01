@@ -4,9 +4,21 @@ import "./App.css";
 import Login from "./pages/auth/Login";
 import { Home } from "./pages/client/Home";
 import { NoAuthenticated } from "./routes/NoAuthenticated";
+import { Authenticated } from "./routes/Authenticated";
 import { Lowongan } from "./pages/client/Lowongan";
 import { Faq } from "./pages/client/Faq";
+import { Fakultas } from "./pages/dashboard/master/Fakultas";
+import { ProgramStudi } from "./pages/dashboard/master/ProgramStudi";
+import { Alumni } from "./pages/dashboard/pengguna/Alumni";
+import { Dosen } from "./pages/dashboard/pengguna/Dosen";
 import { Dashboard } from "./pages/dashboard/Dashboard";
+import { MasterFAQ } from "./pages/dashboard/konten/MasterFAQ";
+import { MasterKonten } from "./pages/dashboard/konten/MasterKonten";
+import { MasterLowongan } from "./pages/dashboard/konten/MasterLowongan";
+import { Pertanyaan } from "./pages/dashboard/pertanyaan/Pertanyaan";
+import { KategoriPertanyaan } from "./pages/dashboard/pertanyaan/KategoriPertanyaan";
+import { Statistik } from "./pages/dashboard/pertanyaan/Statistik";
+import { Profile } from "./pages/dashboard/Profile";
 
 const ErrorPage = () => {
     return (
@@ -39,7 +51,99 @@ function App() {
                     ></Route>
                     <Route
                         path="/dashboard"
-                        element={<Dashboard></Dashboard>}
+                        element={
+                            <Authenticated>
+                                <Dashboard></Dashboard>
+                            </Authenticated>
+                        }
+                    ></Route>
+                    <Route
+                        path="/profile"
+                        element={
+                            <Authenticated>
+                                <Profile></Profile>
+                            </Authenticated>
+                        }
+                    ></Route>
+                    <Route
+                        path="/master/fakultas"
+                        element={
+                            <Authenticated>
+                                <Fakultas></Fakultas>
+                            </Authenticated>
+                        }
+                    ></Route>
+                    <Route
+                        path="/master/program-studi"
+                        element={
+                            <Authenticated>
+                                <ProgramStudi></ProgramStudi>
+                            </Authenticated>
+                        }
+                    ></Route>
+                    <Route
+                        path="/pengguna/alumni"
+                        element={
+                            <Authenticated>
+                                <Alumni></Alumni>
+                            </Authenticated>
+                        }
+                    ></Route>
+                    <Route
+                        path="/pengguna/dosen"
+                        element={
+                            <Authenticated>
+                                <Dosen></Dosen>
+                            </Authenticated>
+                        }
+                    ></Route>
+                    <Route
+                        path="/konten/faq"
+                        element={
+                            <Authenticated>
+                                <MasterFAQ></MasterFAQ>
+                            </Authenticated>
+                        }
+                    ></Route>
+                    <Route
+                        path="/konten/konten-website"
+                        element={
+                            <Authenticated>
+                                <MasterKonten></MasterKonten>
+                            </Authenticated>
+                        }
+                    ></Route>
+                    <Route
+                        path="/konten/lowongan"
+                        element={
+                            <Authenticated>
+                                <MasterLowongan></MasterLowongan>
+                            </Authenticated>
+                        }
+                    ></Route>
+                    <Route
+                        path="/pertanyaan/kategori-pertanyaan"
+                        element={
+                            <Authenticated>
+                                <KategoriPertanyaan></KategoriPertanyaan>
+                            </Authenticated>
+                        }
+                    ></Route>
+                    <Route
+                        path="/pertanyaan/pertanyaan"
+                        element={
+                            <Authenticated>
+                                <Pertanyaan></Pertanyaan>
+                            </Authenticated>
+                        }
+                    ></Route>
+                    <Route
+                        path="/pertanyaan/statistik"
+                        element={
+                            <Authenticated>
+                                <Statistik></Statistik>
+                            </Authenticated>
+                        }
                     ></Route>
                     <Route path="*" element={<ErrorPage />}></Route>
                 </Routes>

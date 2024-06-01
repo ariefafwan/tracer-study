@@ -1,158 +1,469 @@
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+
 export const SideBar = () => {
+    const location = useLocation();
+    const [menuPertanyaan, setMenuPertanyaan] = useState(false);
+    const [menuPengguna, setMenuPengguna] = useState(false);
+    const [menuKonten, setMenuKonten] = useState(false);
+    const [menuMaster, setMenuMaster] = useState(false);
+
+    useEffect(() => {
+        setMenuKonten(false);
+        setMenuPertanyaan(false);
+        setMenuPengguna(false);
+        setMenuMaster(false);
+        if (
+            location.pathname == "/master/program-studi" ||
+            location.pathname == "/master/fakultas"
+        ) {
+            setMenuMaster((menuMaster) => !menuMaster);
+        } else if (
+            location.pathname == "/pengguna/alumni" ||
+            location.pathname == "/pengguna/dosen"
+        ) {
+            setMenuPengguna((menuPengguna) => !menuPengguna);
+        } else if (
+            location.pathname == "/konten/lowongan" ||
+            location.pathname == "/konten/konten-website" ||
+            location.pathname == "/konten/faq"
+        ) {
+            setMenuKonten((menuKonten) => !menuKonten);
+        } else if (
+            location.pathname == "/petanyaan/kategori" ||
+            location.pathname == "/pertanyaan/pertanyaan" ||
+            location.pathname == "/pengguna/statistik"
+        ) {
+            setMenuPertanyaan((menuPertanyaan) => !menuPertanyaan);
+        }
+    }, [location]);
+
     return (
         <>
-            <aside
-                id="logo-sidebar"
-                className="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0"
-                aria-label="Sidebar"
-            >
+            <aside className="fixed top-0 left-0 z-40 w-72 py-3 h-screen transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0">
                 <div className="h-full px-3 pb-4 overflow-y-auto bg-white">
-                    <ul className="space-y-2 font-medium">
+                    <div>
+                        <Link to={"/"} className="flex ms-2 md:me-24">
+                            <img
+                                src="https://flowbite.com/docs/images/logo.svg"
+                                className="h-8 me-3"
+                                alt="FlowBite Logo"
+                            />
+                            <span className="self-center text-xl font-semibold whitespace-nowrap">
+                                Tracer Study
+                            </span>
+                        </Link>
+                    </div>
+                    <ul className="space-y-2 px-2 font-medium pt-8">
                         <li>
-                            <a
-                                href="#"
-                                className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100"
+                            <Link
+                                to={"/dashboard"}
+                                className={
+                                    (location.pathname == "/dashboard"
+                                        ? "bg-teal-500"
+                                        : "") +
+                                    " flex items-center p-2 text-black rounded-lg hover:bg-teal-500"
+                                }
                             >
                                 <svg
-                                    className="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
-                                    aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg"
-                                    fill="currentColor"
-                                    viewBox="0 0 22 21"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth="1.5"
+                                    stroke="currentColor"
+                                    className="w-5 h-5 text-black transition duration-75 group-hover:text-black"
                                 >
-                                    <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
-                                    <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M10.5 6a7.5 7.5 0 1 0 7.5 7.5h-7.5V6Z"
+                                    />
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M13.5 10.5H21A7.5 7.5 0 0 0 13.5 3v7.5Z"
+                                    />
                                 </svg>
                                 <span className="ms-3">Dashboard</span>
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a
-                                href="#"
-                                className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100"
+                            <button
+                                type="button"
+                                onClick={() =>
+                                    setMenuPengguna(
+                                        (menuPengguna) => !menuPengguna
+                                    )
+                                }
+                                className="flex items-center w-full p-2 text-base text-black transition duration-75 rounded-lg group hover:bg-teal-500"
                             >
                                 <svg
-                                    className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
-                                    aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg"
-                                    fill="currentColor"
-                                    viewBox="0 0 18 18"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth="1.5"
+                                    stroke="currentColor"
+                                    className="w-5 h-5 text-black transition duration-75 group-hover:text-black"
                                 >
-                                    <path d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z" />
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z"
+                                    />
                                 </svg>
-                                <span className="flex-1 ms-3 whitespace-nowrap">
-                                    Kanban
+                                <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">
+                                    Pengguna
                                 </span>
-                                <span className="inline-flex items-center justify-center px-2 ms-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full">
-                                    Pro
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="#"
-                                className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100"
-                            >
                                 <svg
-                                    className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                                >
-                                    <path d="m17.418 3.623-.018-.008a6.713 6.713 0 0 0-2.4-.569V2h1a1 1 0 1 0 0-2h-2a1 1 0 0 0-1 1v2H9.89A6.977 6.977 0 0 1 12 8v5h-2V8A5 5 0 1 0 0 8v6a1 1 0 0 0 1 1h8v4a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-4h6a1 1 0 0 0 1-1V8a5 5 0 0 0-2.582-4.377ZM6 12H4a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Z" />
-                                </svg>
-                                <span className="flex-1 ms-3 whitespace-nowrap">
-                                    Inbox
-                                </span>
-                                <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full">
-                                    3
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="#"
-                                className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100"
-                            >
-                                <svg
-                                    className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 18"
-                                >
-                                    <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
-                                </svg>
-                                <span className="flex-1 ms-3 whitespace-nowrap">
-                                    Users
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="#"
-                                className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100"
-                            >
-                                <svg
-                                    className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="currentColor"
-                                    viewBox="0 0 18 20"
-                                >
-                                    <path d="M17 5.923A1 1 0 0 0 16 5h-3V4a4 4 0 1 0-8 0v1H2a1 1 0 0 0-1 .923L.086 17.846A2 2 0 0 0 2.08 20h13.84a2 2 0 0 0 1.994-2.153L17 5.923ZM7 9a1 1 0 0 1-2 0V7h2v2Zm0-5a2 2 0 1 1 4 0v1H7V4Zm6 5a1 1 0 1 1-2 0V7h2v2Z" />
-                                </svg>
-                                <span className="flex-1 ms-3 whitespace-nowrap">
-                                    Products
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="#"
-                                className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100"
-                            >
-                                <svg
-                                    className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
+                                    className={
+                                        (menuPengguna ? "rotate-180" : "") +
+                                        " w-3 h-3 transition duration-75"
+                                    }
                                     aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
-                                    viewBox="0 0 18 16"
+                                    viewBox="0 0 10 6"
                                 >
                                     <path
                                         stroke="currentColor"
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
                                         strokeWidth={2}
-                                        d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3"
+                                        d="m1 1 4 4 4-4"
                                     />
                                 </svg>
-                                <span className="flex-1 ms-3 whitespace-nowrap">
-                                    Sign In
-                                </span>
-                            </a>
+                            </button>
+                            <ul
+                                className={
+                                    (menuPengguna ? "" : "hidden") +
+                                    " py-2 space-y-2"
+                                }
+                            >
+                                <li>
+                                    <Link
+                                        to={"/pengguna/alumni"}
+                                        className={
+                                            (location.pathname ==
+                                            "/pengguna/alumni"
+                                                ? "bg-teal-500"
+                                                : "") +
+                                            " flex items-center text-sm w-full p-2 text-black transition duration-75 rounded-lg pl-11 group hover:bg-teal-500"
+                                        }
+                                    >
+                                        Alumni Tedaftar
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        to={"/pengguna/dosen"}
+                                        className={
+                                            (location.pathname ==
+                                            "/pengguna/dosen"
+                                                ? "bg-teal-500"
+                                                : "") +
+                                            " flex items-center text-sm w-full p-2 text-black transition duration-75 rounded-lg pl-11 group hover:bg-teal-500"
+                                        }
+                                    >
+                                        Dosen Terdaftar
+                                    </Link>
+                                </li>
+                            </ul>
                         </li>
                         <li>
-                            <a
-                                href="#"
-                                className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100"
+                            <button
+                                type="button"
+                                onClick={() =>
+                                    setMenuMaster((menuMaster) => !menuMaster)
+                                }
+                                className="flex items-center w-full p-2 text-base text-black transition duration-75 rounded-lg group hover:bg-teal-500"
                             >
                                 <svg
-                                    className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth="1.5"
+                                    stroke="currentColor"
+                                    className="w-5 h-5 text-black transition duration-75 group-hover:text-black"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125"
+                                    />
+                                </svg>
+                                <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">
+                                    Master
+                                </span>
+                                <svg
+                                    className={
+                                        (menuMaster ? "rotate-180" : "") +
+                                        " w-3 h-3 transition duration-75"
+                                    }
                                     aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
+                                    fill="none"
+                                    viewBox="0 0 10 6"
                                 >
-                                    <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z" />
-                                    <path d="M6.737 11.061a2.961 2.961 0 0 1 .81-1.515l6.117-6.116A4.839 4.839 0 0 1 16 2.141V2a1.97 1.97 0 0 0-1.933-2H7v5a2 2 0 0 1-2 2H0v11a1.969 1.969 0 0 0 1.933 2h12.134A1.97 1.97 0 0 0 16 18v-3.093l-1.546 1.546c-.413.413-.94.695-1.513.81l-3.4.679a2.947 2.947 0 0 1-1.85-.227 2.96 2.96 0 0 1-1.635-3.257l.681-3.397Z" />
-                                    <path d="M8.961 16a.93.93 0 0 0 .189-.019l3.4-.679a.961.961 0 0 0 .49-.263l6.118-6.117a2.884 2.884 0 0 0-4.079-4.078l-6.117 6.117a.96.96 0 0 0-.263.491l-.679 3.4A.961.961 0 0 0 8.961 16Zm7.477-9.8a.958.958 0 0 1 .68-.281.961.961 0 0 1 .682 1.644l-.315.315-1.36-1.36.313-.318Zm-5.911 5.911 4.236-4.236 1.359 1.359-4.236 4.237-1.7.339.341-1.699Z" />
+                                    <path
+                                        stroke="currentColor"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="m1 1 4 4 4-4"
+                                    />
                                 </svg>
-                                <span className="flex-1 ms-3 whitespace-nowrap">
-                                    Sign Up
+                            </button>
+                            <ul
+                                className={
+                                    (menuMaster ? "" : "hidden") +
+                                    " py-2 space-y-2"
+                                }
+                            >
+                                <li>
+                                    <Link
+                                        to={"/master/fakultas"}
+                                        className={
+                                            (location.pathname ==
+                                            "/master/fakultas"
+                                                ? "bg-teal-500"
+                                                : "") +
+                                            " flex items-center text-sm w-full p-2 text-black transition duration-75 rounded-lg pl-11 group hover:bg-teal-500"
+                                        }
+                                    >
+                                        Fakultas
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        to={"/master/program-studi"}
+                                        className={
+                                            (location.pathname ==
+                                            "/master/program-studi"
+                                                ? "bg-teal-500"
+                                                : "") +
+                                            " flex items-center text-sm w-full p-2 text-black transition duration-75 rounded-lg pl-11 group hover:bg-teal-500"
+                                        }
+                                    >
+                                        Program Studi
+                                    </Link>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <button
+                                type="button"
+                                onClick={() =>
+                                    setMenuPertanyaan(
+                                        (menuPertanyaan) => !menuPertanyaan
+                                    )
+                                }
+                                className="flex items-center w-full p-2 text-base text-black transition duration-75 rounded-lg group hover:bg-teal-500"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth="1.5"
+                                    stroke="currentColor"
+                                    className="flex-shrink-0 w-5 h-5 text-black transition duration-75 group-hover:text-black"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z"
+                                    />
+                                </svg>
+                                <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">
+                                    Pertanyaan
                                 </span>
-                            </a>
+                                <svg
+                                    className={
+                                        (menuPertanyaan ? "rotate-180" : "") +
+                                        " w-3 h-3 transition duration-75"
+                                    }
+                                    aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 10 6"
+                                >
+                                    <path
+                                        stroke="currentColor"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="m1 1 4 4 4-4"
+                                    />
+                                </svg>
+                            </button>
+                            <ul
+                                className={
+                                    (menuPertanyaan ? "" : "hidden") +
+                                    " py-2 space-y-2"
+                                }
+                            >
+                                <li>
+                                    <Link
+                                        to={"/pertanyaan/kategori-pertanyaan"}
+                                        className={
+                                            (location.pathname ==
+                                            "/pertanyaan/kategori-pertanyaan"
+                                                ? "bg-teal-500"
+                                                : "") +
+                                            " flex items-center text-sm w-full p-2 text-black transition duration-75 rounded-lg pl-11 group hover:bg-teal-500"
+                                        }
+                                    >
+                                        Kategori
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        to={"/petanyaan/pertanyaan"}
+                                        className={
+                                            (location.pathname ==
+                                            "/pertanyaan/pertanyaan"
+                                                ? "bg-teal-500"
+                                                : "") +
+                                            " flex items-center text-sm w-full p-2 text-black transition duration-75 rounded-lg pl-11 group hover:bg-teal-500"
+                                        }
+                                    >
+                                        Pertanyaan
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        to={"/pertanyaan/statistik"}
+                                        className={
+                                            (location.pathname ==
+                                            "/pertanyaan/statistik"
+                                                ? "bg-teal-500"
+                                                : "") +
+                                            " flex items-center text-sm w-full p-2 text-black transition duration-75 rounded-lg pl-11 group hover:bg-teal-500"
+                                        }
+                                    >
+                                        Statistik
+                                    </Link>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <button
+                                type="button"
+                                onClick={() =>
+                                    setMenuKonten((menuKonten) => !menuKonten)
+                                }
+                                className="flex items-center w-full p-2 text-base text-black transition duration-75 rounded-lg group hover:bg-teal-500"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth="1.5"
+                                    stroke="currentColor"
+                                    className="w-5 h-5 text-black transition duration-75 group-hover:text-black"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z"
+                                    />
+                                </svg>
+                                <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">
+                                    Konten
+                                </span>
+                                <svg
+                                    className={
+                                        (menuKonten ? "rotate-180" : "") +
+                                        " w-3 h-3 transition duration-75"
+                                    }
+                                    aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 10 6"
+                                >
+                                    <path
+                                        stroke="currentColor"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="m1 1 4 4 4-4"
+                                    />
+                                </svg>
+                            </button>
+                            <ul
+                                className={
+                                    (menuKonten ? "" : "hidden") +
+                                    " py-2 space-y-2"
+                                }
+                            >
+                                <li>
+                                    <Link
+                                        to={"/konten/lowongan"}
+                                        className={
+                                            (location.pathname ==
+                                            "/konten/lowongan"
+                                                ? "bg-teal-500"
+                                                : "") +
+                                            " flex items-center text-sm w-full p-2 text-black transition duration-75 rounded-lg pl-11 group hover:bg-teal-500"
+                                        }
+                                    >
+                                        Lowongan Pekerjaan
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        to={"/konten/faq"}
+                                        className={
+                                            (location.pathname == "/konten/faq"
+                                                ? "bg-teal-500"
+                                                : "") +
+                                            " flex items-center text-sm w-full p-2 text-black transition duration-75 rounded-lg pl-11 group hover:bg-teal-500"
+                                        }
+                                    >
+                                        FAQ's
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        to={"/konten/konten-website"}
+                                        className={
+                                            (location.pathname ==
+                                            "/konten/konten-website"
+                                                ? "bg-teal-500"
+                                                : "") +
+                                            " flex items-center text-sm w-full p-2 text-black transition duration-75 rounded-lg pl-11 group hover:bg-teal-500"
+                                        }
+                                    >
+                                        Konten Website
+                                    </Link>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <Link
+                                to={"/profile"}
+                                className={
+                                    (location.pathname == "/profile"
+                                        ? "bg-teal-500"
+                                        : "") +
+                                    " flex items-center p-2 text-black rounded-lg hover:bg-teal-500"
+                                }
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth="1.5"
+                                    stroke="currentColor"
+                                    className="w-5 h-5 text-black transition duration-75 group-hover:text-black"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M4.5 12a7.5 7.5 0 0 0 15 0m-15 0a7.5 7.5 0 1 1 15 0m-15 0H3m16.5 0H21m-1.5 0H12m-8.457 3.077 1.41-.513m14.095-5.13 1.41-.513M5.106 17.785l1.15-.964m11.49-9.642 1.149-.964M7.501 19.795l.75-1.3m7.5-12.99.75-1.3m-6.063 16.658.26-1.477m2.605-14.772.26-1.477m0 17.726-.26-1.477M10.698 4.614l-.26-1.477M16.5 19.794l-.75-1.299M7.5 4.205 12 12m6.894 5.785-1.149-.964M6.256 7.178l-1.15-.964m15.352 8.864-1.41-.513M4.954 9.435l-1.41-.514M12.002 12l-3.75 6.495"
+                                    />
+                                </svg>
+                                <span className="ms-3">Profile</span>
+                            </Link>
                         </li>
                     </ul>
                 </div>

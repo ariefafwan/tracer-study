@@ -15,7 +15,6 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('nama');
             $table->longText('alamat');
-            $table->string('tema_warna');
             $table->string('logo');
             $table->string('no_telp');
             $table->string('email');
