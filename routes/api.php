@@ -3,10 +3,17 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BiodataController;
+use App\Http\Controllers\Api\ClientWebsiteController;
+use App\Http\Controllers\Api\Konten\FAQController;
+use App\Http\Controllers\Api\Konten\KontenWebsiteController;
+use App\Http\Controllers\Api\Konten\LowonganController;
 use App\Http\Controllers\Api\Master\AlumniController;
 use App\Http\Controllers\Api\Master\DosenController;
 use App\Http\Controllers\Api\Master\FakultasController;
+use App\Http\Controllers\Api\Master\KategoriPertanyaanController;
 use App\Http\Controllers\Api\Master\ProgramStudiController;
+use App\Http\Controllers\Api\Pertanyaan\PertanyaanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +31,13 @@ use App\Http\Controllers\Api\Master\ProgramStudiController;
 // });
 
 Route::post('login', [AuthController::class, 'login']);
+
+Route::group(['prefix' => 'client'], function () {
+    Route::get('/profile', [ClientWebsiteController::class, 'index']);
+    Route::get('/konten', [ClientWebsiteController::class, 'konten']);
+    Route::get('/lowongan', [ClientWebsiteController::class, 'lowongan']);
+    Route::get('/data', [ClientWebsiteController::class, 'data']);
+});
 
 Route::middleware(('jwt'))->group(function () {
 
@@ -65,6 +79,59 @@ Route::middleware(('jwt'))->group(function () {
             Route::get('/edit/{id}', [ProgramStudiController::class, 'edit']);
             Route::post('/update', [ProgramStudiController::class, 'update']);
             Route::delete('/delete/{id}', [ProgramStudiController::class, 'delete']);
+        });
+    });
+
+    Route::group(['prefix' => 'pertanyaan'], function () {
+        Route::group(['prefix' => 'kategori-pertanyaan'], function () {
+            Route::get('/', [KategoriPertanyaanController::class, 'index']);
+            Route::post('/store', [KategoriPertanyaanController::class, 'store']);
+            Route::get('/edit/{id}', [KategoriPertanyaanController::class, 'edit']);
+            Route::post('/update', [KategoriPertanyaanController::class, 'update']);
+            Route::delete('/delete/{id}', [KategoriPertanyaanController::class, 'delete']);
+        });
+
+        Route::group(['prefix' => 'pertanyaan'], function () {
+            Route::get('/', [PertanyaanController::class, 'index']);
+            Route::get('/create', [PertanyaanController::class, 'create']);
+            Route::post('/store', [PertanyaanController::class, 'store']);
+            Route::get('/data/{id}', [PertanyaanController::class, 'data']);
+            Route::get('/edit/{id}', [PertanyaanController::class, 'edit']);
+            Route::post('/update', [PertanyaanController::class, 'update']);
+            Route::delete('/delete/{id}', [PertanyaanController::class, 'delete']);
+        });
+    });
+
+    Route::group(['prefix' => 'konten'], function () {
+        Route::group(['prefix' => 'lowongan'], function () {
+            Route::get('/', [LowonganController::class, 'index']);
+            Route::get('/data', [LowonganController::class, 'data']);
+            Route::post('/store', [LowonganController::class, 'store']);
+            Route::get('/edit/{id}', [LowonganController::class, 'edit']);
+            Route::post('/update', [LowonganController::class, 'update']);
+            Route::delete('/delete/{id}', [LowonganController::class, 'delete']);
+        });
+
+        Route::group(['prefix' => 'faq'], function () {
+            Route::get('/', [FAQController::class, 'index']);
+            Route::post('/store', [FAQController::class, 'store']);
+            Route::get('/edit/{id}', [FAQController::class, 'edit']);
+            Route::post('/update', [FAQController::class, 'update']);
+            Route::delete('/delete/{id}', [FAQController::class, 'delete']);
+        });
+
+        Route::group(['prefix' => 'konten'], function () {
+            Route::get('/', [KontenWebsiteController::class, 'index']);
+            Route::post('/store', [KontenWebsiteController::class, 'store']);
+            Route::get('/edit/{id}', [KontenWebsiteController::class, 'edit']);
+            Route::post('/update', [KontenWebsiteController::class, 'update']);
+            Route::delete('/delete/{id}', [KontenWebsiteController::class, 'delete']);
+        });
+
+        Route::group(['prefix' => 'profile'], function () {
+            Route::get('/', [BiodataController::class, 'index']);
+            Route::post('/store', [BiodataController::class, 'store']);
+            Route::post('/update', [BiodataController::class, 'update']);
         });
     });
 });

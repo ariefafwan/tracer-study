@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('master_sub_topik_pertanyaan', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('id_pertanyaan')->constrained('master_pertanyaan')->references('id')->onDelete('restrict')->onUpdate('cascade');
+            $table->foreignUuid('id_pertanyaan')->constrained('master_pertanyaan')->references('id')->onDelete('cascade')->onUpdate('cascade');
+            $table->tinyInteger('urutan');
             $table->string('sub_topik_pertanyaan');
             $table->timestamps();
         });

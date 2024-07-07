@@ -2,14 +2,54 @@
 /* eslint-disable no-unused-vars */
 import { GuestLayout } from "../../layouts/GuestLayout";
 import { Head } from "../../components/Head";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CardLowongan } from "../../components/CardLowongan";
+import { MainContext } from "../../Context/MainContext";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { Link } from "react-router-dom";
 
 export const Home = () => {
-    const [card, setCard] = useState([1, 2, 3, 4, 5, 6]);
+    const { dataProfile, fetchProfile, setFetchProfile } =
+        useContext(MainContext);
+    const [dataKonten, setDataKonten] = useState([]);
+    const [dataLowongan, setDataLowongan] = useState([]);
+
+    useEffect(() => {
+        if (dataProfile.length < 1) {
+            setFetchProfile(true);
+        }
+    }, [dataProfile]);
+
+    const [kontenHeader, setKontenHeader] = useState([]);
+    let [gambarHeader, setGambarHeader] = useState([]);
+    let [tentangTracer, setTentangTracer] = useState([]);
+
+    useEffect(() => {
+        axios
+            .get(`${import.meta.env.VITE_ALL_BASE_URL}/client/konten`)
+            .then((res) => {
+                setDataKonten([...res.data.konten]);
+                setDataLowongan([...res.data.lowongan]);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, []);
+
+    useEffect(() => {
+        setKontenHeader(dataKonten.filter((data) => data.nama === "Header"));
+        setGambarHeader(
+            dataKonten.filter((data) => data.nama === "Gambar Header")
+        );
+        setTentangTracer(
+            dataKonten.filter((data) => data.nama === "Tentang Tracer Study")
+        );
+    }, [dataKonten, dataLowongan]);
+
     return (
         <>
-            <Head title="Log in" />
+            <Head title="Welcome - Tracer Study" />
             <GuestLayout>
                 <section className="bg-white mx-auto max-w-screen-xl px-8 pb-16 pt-24 lg:py-36">
                     <div className="grid max-w-screen-xl mx-auto lg:gap-8 xl:gap-0 lg:grid-cols-12">
@@ -26,12 +66,19 @@ export const Home = () => {
                                 </h1>
                             </div>
                             <p className="max-w-2xl max-lg:text-center mb-6 font-light text-gray-500 lg:mb-8 md:text-lg">
-                                Selamat datang di Laman Tracer Study, Direktorat
-                                Pemebelajaran dan Kemahasiswaan, Direktorat
-                                Jenderal Pendidikan Tinggi. Laman ini
-                                diperuntukkan untuk mengelola data hasil tracer
-                                study yang dilaksanakan oleh Perguruan Tinggi di
-                                Indonesia.
+                                {kontenHeader.length > 0
+                                    ? kontenHeader[0].konten
+                                    : `Lorem ipsum, dolor sit amet consectetur
+                                adipisicing elit. Perferendis qui reprehenderit
+                                numquam nam autem! Dolorum aspernatur aliquam
+                                aut veritatis delectus. Veniam optio repudiandae
+                                dolorum atque sapiente aperiam corrupti
+                                necessitatibus ad?Lorem ipsum dolor, sit amet
+                                consectetur adipisicing elit. Temporibus sint
+                                ratione animi soluta sed impedit ab blanditiis
+                                totam dolores perferendis debitis, distinctio
+                                sequi molestiae molestias fuga harum sapiente
+                                modi iusto!Lorem`}
                             </p>
                             <div className="max-w-2xl flex max-lg:justify-center">
                                 <a
@@ -58,7 +105,16 @@ export const Home = () => {
                         </div>
                         <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">
                             <img
-                                src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/hero/phone-mockup.png"
+                                src={
+                                    gambarHeader.length > 0
+                                        ? `${
+                                              import.meta.env
+                                                  .VITE_AUTH_MAIN_BASE_URL
+                                          }/storage/Konten/Gambar/${
+                                              gambarHeader[0].gambar
+                                          }`
+                                        : ""
+                                }
                                 alt="mockup"
                             />
                         </div>
@@ -73,7 +129,9 @@ export const Home = () => {
                         </div>
                         <div className="flex justify-center mt-6">
                             <p className="text-sm md:text-md text-gray-500 font-normal text-justify">
-                                Lorem ipsum, dolor sit amet consectetur
+                                {tentangTracer.length > 0
+                                    ? tentangTracer[0].konten
+                                    : `Lorem ipsum, dolor sit amet consectetur
                                 adipisicing elit. Perferendis qui reprehenderit
                                 numquam nam autem! Dolorum aspernatur aliquam
                                 aut veritatis delectus. Veniam optio repudiandae
@@ -83,7 +141,7 @@ export const Home = () => {
                                 ratione animi soluta sed impedit ab blanditiis
                                 totam dolores perferendis debitis, distinctio
                                 sequi molestiae molestias fuga harum sapiente
-                                modi iusto!Lorem
+                                modi iusto!Lorem`}
                             </p>
                         </div>
                     </div>
@@ -96,18 +154,28 @@ export const Home = () => {
                             </h2>
                         </div>
                         <div className="mt-8 hidden md:grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-                            {card.map((val, i) => {
-                                return <CardLowongan key={i}></CardLowongan>;
+                            {dataLowongan.map((val, i) => {
+                                return (
+                                    <CardLowongan
+                                        data={val}
+                                        key={i}
+                                    ></CardLowongan>
+                                );
                             })}
                         </div>
                         <div className="mt-8 max-md:grid hidden grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-                            {card.slice(0, 3).map((val, i) => {
-                                return <CardLowongan key={i}></CardLowongan>;
+                            {dataLowongan.slice(0, 3).map((val, i) => {
+                                return (
+                                    <CardLowongan
+                                        data={val}
+                                        key={i}
+                                    ></CardLowongan>
+                                );
                             })}
                         </div>
                         <div className="mt-12 text-center">
-                            <a
-                                href="#"
+                            <Link
+                                to={"/lowongan"}
                                 className="inline-flex rounded-md bg-teal-600 px-8 text-md py-2 text-sm font-medium text-white transition hover:bg-teal-500 focus:outline-none"
                             >
                                 <span className="my-auto">Lihat Lainnya</span>{" "}
@@ -126,7 +194,7 @@ export const Home = () => {
                                         d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
                                     />
                                 </svg>
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </section>

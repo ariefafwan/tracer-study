@@ -1,7 +1,30 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
+import { useEffect, useState } from "react";
 import { Head } from "../../components/Head";
 import { GuestLayout } from "../../layouts/GuestLayout";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { Loader } from "../../components/Loader";
 
 export const Faq = () => {
+    const [kontenFaq, setKontenFaq] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [dataFaq, setDataFaq] = useState([]);
+    useEffect(() => {
+        axios
+            .get(`${import.meta.env.VITE_ALL_BASE_URL}/client/konten`)
+            .then((res) => {
+                setKontenFaq(
+                    res.data.konten.filter((data) => data.nama == "FAQ")
+                );
+                setDataFaq([...res.data.faq]);
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, []);
     return (
         <>
             <Head title={"FAQs"} />
@@ -18,84 +41,55 @@ export const Faq = () => {
                                         Ada Pertanyaan? Temukan Jawabannya!
                                     </h2>
                                     <p className="max-xs:text-sm text-base text-body-color">
-                                        There are many variations of passages of
-                                        Lorem Ipsum available but the majority
-                                        have suffered alteration in some form.
+                                        {kontenFaq.length > 0
+                                            ? kontenFaq[0].konten
+                                            : ""}
                                     </p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className="grid max-xs:grid-cols-1 grid-cols-2 gap-8">
-                        <div className="w-full">
-                            <details className="group border-s-4 border-green-500 bg-gray-50 p-6 [&_summary::-webkit-details-marker]:hidden">
-                                <summary className="flex cursor-pointer items-center justify-between gap-1.5">
-                                    <h2 className="max-xs:text-sm text-md font-medium text-gray-900">
-                                        Lorem ipsum dolor sit amet consectetur
-                                        adipisicing?
-                                    </h2>
+                        {dataFaq.length > 0 ? (
+                            dataFaq.map((data, i) => {
+                                return (
+                                    <>
+                                        <div className="w-full">
+                                            <details className="group border-s-4 border-green-500 bg-gray-50 p-6 [&_summary::-webkit-details-marker]:hidden">
+                                                <summary className="flex cursor-pointer items-center justify-between gap-1.5">
+                                                    <h2 className="max-xs:text-sm text-md font-medium text-gray-900">
+                                                        {data.pertanyaan}
+                                                    </h2>
 
-                                    <span className="shrink-0 rounded-full bg-white p-1.5 text-gray-900 sm:p-3">
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            className="size-5 shrink-0 transition duration-300 group-open:-rotate-45"
-                                            viewBox="0 0 20 20"
-                                            fill="currentColor"
-                                        >
-                                            <path
-                                                fillRule="evenodd"
-                                                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                                                clipRule="evenodd"
-                                            />
-                                        </svg>
-                                    </span>
-                                </summary>
+                                                    <span className="shrink-0 rounded-full bg-white p-1.5 text-gray-900 sm:p-3">
+                                                        <svg
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            className="size-5 shrink-0 transition duration-300 group-open:-rotate-45"
+                                                            viewBox="0 0 20 20"
+                                                            fill="currentColor"
+                                                        >
+                                                            <path
+                                                                fillRule="evenodd"
+                                                                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                                                                clipRule="evenodd"
+                                                            />
+                                                        </svg>
+                                                    </span>
+                                                </summary>
 
-                                <p className="mt-4 text-sm leading-relaxed text-justify text-gray-700">
-                                    Lorem ipsum dolor sit amet consectetur,
-                                    adipisicing elit. Ab hic veritatis molestias
-                                    culpa in, recusandae laboriosam neque
-                                    aliquid libero nesciunt voluptate dicta quo
-                                    officiis explicabo consequuntur distinctio
-                                    corporis earum similique!
-                                </p>
-                            </details>
-                        </div>
-
-                        <div className="w-full">
-                            <details className="group border-s-4 border-green-500 bg-gray-50 p-6 [&_summary::-webkit-details-marker]:hidden">
-                                <summary className="flex cursor-pointer items-center justify-between gap-1.5">
-                                    <h2 className="max-xs:text-sm text-md font-medium text-gray-900">
-                                        Lorem ipsum dolor sit amet consectetur
-                                        adipisicing?
-                                    </h2>
-
-                                    <span className="shrink-0 rounded-full bg-white p-1.5 text-gray-900 sm:p-3">
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            className="size-5 shrink-0 transition duration-300 group-open:-rotate-45"
-                                            viewBox="0 0 20 20"
-                                            fill="currentColor"
-                                        >
-                                            <path
-                                                fillRule="evenodd"
-                                                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                                                clipRule="evenodd"
-                                            />
-                                        </svg>
-                                    </span>
-                                </summary>
-
-                                <p className="mt-4 text-sm leading-relaxed text-justify text-gray-700">
-                                    Lorem ipsum dolor sit amet consectetur,
-                                    adipisicing elit. Ab hic veritatis molestias
-                                    culpa in, recusandae laboriosam neque
-                                    aliquid libero nesciunt voluptate dicta quo
-                                    officiis explicabo consequuntur distinctio
-                                    corporis earum similique!
-                                </p>
-                            </details>
-                        </div>
+                                                <p className="mt-4 text-sm leading-relaxed text-justify text-gray-700">
+                                                    {data.jawaban}
+                                                </p>
+                                            </details>
+                                        </div>
+                                    </>
+                                );
+                            })
+                        ) : (
+                            <div className="col-span-2 flex justify-center">
+                                <Loader></Loader>
+                            </div>
+                        )}
                     </div>
                 </section>
             </GuestLayout>

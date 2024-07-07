@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('master_pilihan_jawaban', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('id_pertanyaan')->constrained('master_pertanyaan')->references('id')->onDelete('restrict')->onUpdate('cascade');
+            $table->foreignUuid('id_pertanyaan')->constrained('master_pertanyaan')->references('id')->onDelete('cascade')->onUpdate('cascade');
+            $table->tinyInteger('urutan');
             $table->string('nama_pilihan')->nullable();
-            $table->enum('pilihan_lainnya', ['Ya', 'Tidak']);
+            $table->enum('isInput', ['Ya', 'Tidak']);
             $table->timestamps();
         });
     }

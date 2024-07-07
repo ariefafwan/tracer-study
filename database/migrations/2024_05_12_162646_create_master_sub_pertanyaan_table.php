@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('master_sub_pertanyaan', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('id_pertanyaan')->constrained('master_pertanyaan')->references('id')->onDelete('restrict')->onUpdate('cascade');
+            $table->foreignUuid('id_pertanyaan')->constrained('master_pertanyaan')->references('id')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignUuid('id_pilihan_jawaban')->nullable()->constrained('master_pilihan_jawaban')->references('id')->onDelete('cascade')->onUpdate('cascade');
+            $table->tinyInteger('urutan');
+            $table->enum('jenis_subpertanyaan', ['Pilihan', 'Inputan_Angka', 'Inputan_Text', 'Inputan_Tanggal'])->nullable();
             $table->longText('sub_pertanyaan');
             $table->timestamps();
         });

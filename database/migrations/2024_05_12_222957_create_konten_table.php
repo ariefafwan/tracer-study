@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('konten', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->string('nama');
             $table->longText('konten')->nullable();
             $table->string('gambar')->nullable();
             $table->enum('tipe_konten', ['HTML', 'Text', 'Gambar']);

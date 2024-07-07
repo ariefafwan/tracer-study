@@ -1,10 +1,81 @@
-import { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
+import { useEffect, useState } from "react";
 import { Head } from "../../components/Head";
 import { GuestLayout } from "../../layouts/GuestLayout";
+import axios from "axios";
+import Cookies from "js-cookie";
 import { CardLowongan } from "../../components/CardLowongan";
+import { Loader } from "../../components/Loader";
 
 export const Lowongan = () => {
-    const [card, setCard] = useState([1, 2, 3, 4, 5, 6]);
+    const [ordering, setOrdering] = useState("");
+    const [dataLowongan, setDataLowongan] = useState({
+        current_page: 1,
+        data: [],
+        first_page_url: "",
+        from: 1,
+        last_page: 1,
+        last_page_url: "",
+        links: "",
+        next_page_url: null,
+        path: "",
+        per_page: 10,
+        prev_page_url: null,
+        to: 2,
+        total: 1,
+    });
+    const [loading, setLoading] = useState(true);
+    const [kontenLowongan, setKontenLowongan] = useState([]);
+
+    useEffect(() => {
+        if (loading == true) {
+            axios
+                .get(
+                    `${
+                        import.meta.env.VITE_ALL_BASE_URL
+                    }/client/lowongan?ordering=${ordering}`
+                )
+                .then((res) => {
+                    setDataLowongan({
+                        current_page: res.data.current_page,
+                        data: [...res.data.data],
+                        first_page_url: res.data.first_page_url,
+                        from: res.data.from,
+                        last_page: res.data.last_page,
+                        last_page_url: res.data.last_page_url,
+                        links: res.data.links,
+                        next_page_url: res.data.next_page_url,
+                        path: res.data.path,
+                        per_page: res.data.per_page,
+                        prev_page_url: res.data.prev_page_url,
+                        to: res.data.to,
+                        total: res.data.total,
+                    });
+                    setLoading(false);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    }, [loading, setLoading]);
+
+    useEffect(() => {
+        axios
+            .get(`${import.meta.env.VITE_ALL_BASE_URL}/client/konten`)
+            .then((res) => {
+                setKontenLowongan(
+                    res.data.konten.filter(
+                        (data) => data.nama == "Lowongan Pekerjaan"
+                    )
+                );
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, []);
+
     return (
         <>
             <Head title="Lowongan Pekerjaan" />
@@ -17,10 +88,9 @@ export const Lowongan = () => {
                             </h2>
 
                             <p className="mt-4 max-lg:text-sm max-lg:text-center max-lg:max-w-full max-w-md text-gray-500">
-                                Lorem ipsum, dolor sit amet consectetur
-                                adipisicing elit. Itaque praesentium cumque iure
-                                dicta incidunt est ipsam, officia dolor fugit
-                                natus?
+                                {kontenLowongan.length > 0
+                                    ? kontenLowongan[0].konten
+                                    : ""}
                             </p>
                         </header>
 
@@ -60,21 +130,15 @@ export const Lowongan = () => {
 
                                     <select
                                         id="SortBy"
+                                        value={ordering}
+                                        onChange={(e) => {
+                                            setOrdering(e.target.value);
+                                            setLoading(true);
+                                        }}
                                         className="mt-1 rounded border-gray-300 text-sm"
                                     >
-                                        <option>Sort By</option>
-                                        <option value="Title, DESC">
-                                            Title, DESC
-                                        </option>
-                                        <option value="Title, ASC">
-                                            Title, ASC
-                                        </option>
-                                        <option value="Price, DESC">
-                                            Price, DESC
-                                        </option>
-                                        <option value="Price, ASC">
-                                            Price, ASC
-                                        </option>
+                                        <option value="">A-Z</option>
+                                        <option value="Z-A">Z-A</option>
                                     </select>
                                 </div>
 
@@ -87,10 +151,8 @@ export const Lowongan = () => {
                                         <details className="overflow-hidden rounded border border-gray-300 [&_summary::-webkit-details-marker]:hidden">
                                             <summary className="flex cursor-pointer items-center justify-between gap-2 p-4 text-gray-900 transition">
                                                 <span className="text-sm font-medium">
-                                                    {" "}
-                                                    Availability{" "}
+                                                    Program Studi
                                                 </span>
-
                                                 <span className="transition group-open:-rotate-180">
                                                     <svg
                                                         xmlns="http://www.w3.org/2000/svg"
@@ -186,8 +248,7 @@ export const Lowongan = () => {
                                         <details className="overflow-hidden rounded border border-gray-300 [&_summary::-webkit-details-marker]:hidden">
                                             <summary className="flex cursor-pointer items-center justify-between gap-2 p-4 text-gray-900 transition">
                                                 <span className="text-sm font-medium">
-                                                    {" "}
-                                                    Price{" "}
+                                                    Bidang Usaha
                                                 </span>
 
                                                 <span className="transition group-open:-rotate-180">
@@ -261,14 +322,11 @@ export const Lowongan = () => {
                                                 </div>
                                             </div>
                                         </details>
-
                                         <details className="overflow-hidden rounded border border-gray-300 [&_summary::-webkit-details-marker]:hidden">
                                             <summary className="flex cursor-pointer items-center justify-between gap-2 p-4 text-gray-900 transition">
                                                 <span className="text-sm font-medium">
-                                                    {" "}
-                                                    Colors{" "}
+                                                    Periode
                                                 </span>
-
                                                 <span className="transition group-open:-rotate-180">
                                                     <svg
                                                         xmlns="http://www.w3.org/2000/svg"
@@ -419,13 +477,20 @@ export const Lowongan = () => {
 
                             <div className="lg:col-span-3">
                                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                                    {card.map((val, i) => {
-                                        return (
-                                            <CardLowongan
-                                                key={i}
-                                            ></CardLowongan>
-                                        );
-                                    })}
+                                    {loading == true ? (
+                                        <div className="lg:col-span-3 sm:col-span-2 flex justify-center w-full h-full">
+                                            <Loader></Loader>
+                                        </div>
+                                    ) : (
+                                        dataLowongan.data.map((val, i) => {
+                                            return (
+                                                <CardLowongan
+                                                    data={val}
+                                                    key={i}
+                                                ></CardLowongan>
+                                            );
+                                        })
+                                    )}
                                 </div>
                             </div>
                         </div>

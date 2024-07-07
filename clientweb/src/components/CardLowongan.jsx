@@ -1,31 +1,55 @@
-export const CardLowongan = () => {
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
+
+export const CardLowongan = ({ data }) => {
     return (
         <>
-            <a
+            <Link
                 className="block rounded-xl border border-teal-300 p-8 shadow-xl transition hover:border-teal-500/10 hover:shadow-teal-500/10"
                 href="#"
             >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="size-10 text-gray-500"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                >
-                    <path d="M12 14l9-5-9-5-9 5 9 5z" />
-                    <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
-                    />
-                </svg>
+                <img
+                    className="h-10 w-10"
+                    src={
+                        data.logo_perusahaan !== null ||
+                        data.logo_perusahaan !== ""
+                            ? `${
+                                  import.meta.env.VITE_AUTH_MAIN_BASE_URL
+                              }/storage/Logo/${data.logo_perusahaan}`
+                            : "/loading.jpg"
+                    }
+                    alt=""
+                />
                 <h2 className="mt-2 text-lg font-bold text-gray-500">
-                    Digital campaigns
+                    {data.judul_lowongan}
                 </h2>
-                <p className="mt-1 text-sm text-gray-500">PT. Hudah Huduh</p>
-            </a>
+                <p className="mt-1 inline-flex text-xs text-gray-500">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="currentColor"
+                        className="size-3 my-auto"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                        />
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
+                        />
+                    </svg>
+                    &nbsp;
+                    {data.kota}
+                </p>
+                <p className="mt-1 text-sm text-gray-500">
+                    {data.nama_perusahaan}
+                </p>
+            </Link>
         </>
     );
 };

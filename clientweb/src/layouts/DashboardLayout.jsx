@@ -1,6 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
+import { useState } from "react";
 import { SideBar } from "../components/SideBar";
 
 export const DashboardLayout = ({ children }) => {
+    const [dropdownNavbar, setDropdownNavbar] = useState(false);
+
     return (
         <>
             <nav className="fixed top-0 z-30 w-full bg-white border-b border-gray-200">
@@ -51,6 +56,9 @@ export const DashboardLayout = ({ children }) => {
                                         type="button"
                                         className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300"
                                         aria-expanded="false"
+                                        onClick={() =>
+                                            setDropdownNavbar(!dropdownNavbar)
+                                        }
                                         data-dropdown-toggle="dropdown-user"
                                     >
                                         <span className="sr-only">
@@ -65,7 +73,12 @@ export const DashboardLayout = ({ children }) => {
                                 </div>
                                 {/* dropdown */}
                                 <div
-                                    className="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow"
+                                    className={
+                                        (dropdownNavbar == true
+                                            ? ""
+                                            : "hidden ") +
+                                        "z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow"
+                                    }
                                     id="dropdown-user"
                                 >
                                     <div className="px-4 py-3" role="none">
@@ -83,33 +96,6 @@ export const DashboardLayout = ({ children }) => {
                                         </p>
                                     </div>
                                     <ul className="py-1" role="none">
-                                        <li>
-                                            <a
-                                                href="#"
-                                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                                role="menuitem"
-                                            >
-                                                Dashboard
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a
-                                                href="#"
-                                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                                role="menuitem"
-                                            >
-                                                Settings
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a
-                                                href="#"
-                                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                                role="menuitem"
-                                            >
-                                                Earnings
-                                            </a>
-                                        </li>
                                         <li>
                                             <a
                                                 href="#"

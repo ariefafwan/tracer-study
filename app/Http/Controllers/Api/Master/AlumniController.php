@@ -83,6 +83,7 @@ class AlumniController extends Controller
             DB::commit();
             return response()->json(['success' => 'Berhasil Menambahkan Data'], 201);
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json(['error' => $e->getMessage()], 422);
         }
     }
@@ -133,6 +134,7 @@ class AlumniController extends Controller
             DB::commit();
             return response()->json(['success' => 'Berhasil Mengupdate']);
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json(['error' => $e->getMessage()], 422);
         }
     }
@@ -158,6 +160,7 @@ class AlumniController extends Controller
             DB::commit();
             return response()->json(['success' => 'Berhasil Mengupdate']);
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json(['error' => $e->getMessage()], 422);
         }
     }

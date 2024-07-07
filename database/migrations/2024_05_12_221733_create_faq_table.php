@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('faq', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->tinyInteger('urutan');
             $table->string('pertanyaan');
             $table->longText('jawaban');
             $table->timestamps();

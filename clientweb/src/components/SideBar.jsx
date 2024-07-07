@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 
 export const SideBar = () => {
     const location = useLocation();
+    const { slug, id } = useParams();
     const [menuPertanyaan, setMenuPertanyaan] = useState(false);
     const [menuPengguna, setMenuPengguna] = useState(false);
     const [menuKonten, setMenuKonten] = useState(false);
@@ -25,14 +26,18 @@ export const SideBar = () => {
             setMenuPengguna((menuPengguna) => !menuPengguna);
         } else if (
             location.pathname == "/konten/lowongan" ||
+            location.pathname == "/konten/lowongan/create" ||
+            location.pathname == `/konten/lowongan/edit/${slug}` ||
             location.pathname == "/konten/konten-website" ||
             location.pathname == "/konten/faq"
         ) {
             setMenuKonten((menuKonten) => !menuKonten);
         } else if (
-            location.pathname == "/petanyaan/kategori" ||
+            location.pathname == "/pertanyaan/kategori-pertanyaan" ||
             location.pathname == "/pertanyaan/pertanyaan" ||
-            location.pathname == "/pengguna/statistik"
+            location.pathname == "/pertanyaan/pertanyaan/create" ||
+            location.pathname == `/pertanyaan/pertanyaan/edit/${id}` ||
+            location.pathname == "/pertanyaan/statistik"
         ) {
             setMenuPertanyaan((menuPertanyaan) => !menuPertanyaan);
         }
@@ -317,10 +322,14 @@ export const SideBar = () => {
                                 </li>
                                 <li>
                                     <Link
-                                        to={"/petanyaan/pertanyaan"}
+                                        to={"/pertanyaan/pertanyaan"}
                                         className={
                                             (location.pathname ==
-                                            "/pertanyaan/pertanyaan"
+                                                "/pertanyaan/pertanyaan" ||
+                                            location.pathname ==
+                                                "/pertanyaan/pertanyaan/create" ||
+                                            location.pathname ==
+                                                `/pertanyaan/pertanyaan/edit/${id}`
                                                 ? "bg-teal-500"
                                                 : "") +
                                             " flex items-center text-sm w-full p-2 text-black transition duration-75 rounded-lg pl-11 group hover:bg-teal-500"
@@ -400,7 +409,11 @@ export const SideBar = () => {
                                         to={"/konten/lowongan"}
                                         className={
                                             (location.pathname ==
-                                            "/konten/lowongan"
+                                                "/konten/lowongan" ||
+                                            location.pathname ==
+                                                `konten/lowongan/edit/${slug}` ||
+                                            location.pathname ==
+                                                "/konten/lowongan/create"
                                                 ? "bg-teal-500"
                                                 : "") +
                                             " flex items-center text-sm w-full p-2 text-black transition duration-75 rounded-lg pl-11 group hover:bg-teal-500"
@@ -419,7 +432,7 @@ export const SideBar = () => {
                                             " flex items-center text-sm w-full p-2 text-black transition duration-75 rounded-lg pl-11 group hover:bg-teal-500"
                                         }
                                     >
-                                        FAQ's
+                                        {"FAQ's"}
                                     </Link>
                                 </li>
                                 <li>

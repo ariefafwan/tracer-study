@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('hasil_lowongan', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignId('id_user')->nullable()->constrained('users')->references('id')->onDelete('restrict')->onUpdate('cascade');
             $table->foreignUuid('id_alumni')->nullable()->constrained('master_alumni')->references('id')->onDelete('restrict')->onUpdate('cascade');
             $table->foreignUuid('id_dosen')->nullable()->constrained('master_dosen')->references('id')->onDelete('restrict')->onUpdate('cascade');
+            $table->string('kota');
             $table->string('nama_perusahaan');
             $table->string('logo_perusahaan');
             $table->string('bidang_usaha');
+            $table->string('link_lowongan');
             $table->string('judul_lowongan');
             $table->string('slug');
             $table->longText('desk');
