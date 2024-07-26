@@ -8,12 +8,14 @@ export const SideBar = () => {
     const [menuPengguna, setMenuPengguna] = useState(false);
     const [menuKonten, setMenuKonten] = useState(false);
     const [menuMaster, setMenuMaster] = useState(false);
+    const [menuHasil, setMenuHasil] = useState(false);
 
     useEffect(() => {
         setMenuKonten(false);
         setMenuPertanyaan(false);
         setMenuPengguna(false);
         setMenuMaster(false);
+        setMenuHasil(false);
         if (
             location.pathname == "/master/program-studi" ||
             location.pathname == "/master/fakultas"
@@ -36,10 +38,15 @@ export const SideBar = () => {
             location.pathname == "/pertanyaan/kategori-pertanyaan" ||
             location.pathname == "/pertanyaan/pertanyaan" ||
             location.pathname == "/pertanyaan/pertanyaan/create" ||
-            location.pathname == `/pertanyaan/pertanyaan/edit/${id}` ||
-            location.pathname == "/pertanyaan/statistik"
+            location.pathname == `/pertanyaan/pertanyaan/edit/${id}`
         ) {
             setMenuPertanyaan((menuPertanyaan) => !menuPertanyaan);
+        } else if (
+            location.pathname == "/hasil/hasil-kuisioner" ||
+            location.pathname == `/hasil/hasil-kuisioner/${id}` ||
+            location.pathname == "/hasil/statistik"
+        ) {
+            setMenuHasil((menuHasil) => !menuHasil);
         }
     }, [location]);
 
@@ -49,11 +56,25 @@ export const SideBar = () => {
                 <div className="h-full px-3 pb-4 overflow-y-auto bg-white">
                     <div>
                         <Link to={"/"} className="flex ms-2 md:me-24">
-                            <img
-                                src="https://flowbite.com/docs/images/logo.svg"
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth="1.5"
+                                stroke="currentColor"
                                 className="h-8 me-3"
-                                alt="FlowBite Logo"
-                            />
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M15.362 5.214A8.252 8.252 0 0 1 12 21 8.25 8.25 0 0 1 6.038 7.047 8.287 8.287 0 0 0 9 9.601a8.983 8.983 0 0 1 3.361-6.867 8.21 8.21 0 0 0 3 2.48Z"
+                                />
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M12 18a3.75 3.75 0 0 0 .495-7.468 5.99 5.99 0 0 0-1.925 3.547 5.975 5.975 0 0 1-2.133-1.001A3.75 3.75 0 0 0 12 18Z"
+                                />
+                            </svg>
                             <span className="self-center text-xl font-semibold whitespace-nowrap">
                                 Tracer Study
                             </span>
@@ -338,12 +359,81 @@ export const SideBar = () => {
                                         Pertanyaan
                                     </Link>
                                 </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <button
+                                type="button"
+                                onClick={() =>
+                                    setMenuHasil((menuHasil) => !menuHasil)
+                                }
+                                className="flex items-center w-full p-2 text-base text-black transition duration-75 rounded-lg group hover:bg-teal-500"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth="1.5"
+                                    stroke="currentColor"
+                                    className="w-5 h-5 text-black transition duration-75 group-hover:text-black"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z"
+                                    />
+                                </svg>
+
+                                <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">
+                                    Hasil Kuisioner
+                                </span>
+                                <svg
+                                    className={
+                                        (menuHasil ? "rotate-180" : "") +
+                                        " w-3 h-3 transition duration-75"
+                                    }
+                                    aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 10 6"
+                                >
+                                    <path
+                                        stroke="currentColor"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="m1 1 4 4 4-4"
+                                    />
+                                </svg>
+                            </button>
+                            <ul
+                                className={
+                                    (menuHasil ? "" : "hidden") +
+                                    " py-2 space-y-2"
+                                }
+                            >
                                 <li>
                                     <Link
-                                        to={"/pertanyaan/statistik"}
+                                        to={"/hasil/hasil-kuisioner"}
                                         className={
                                             (location.pathname ==
-                                            "/pertanyaan/statistik"
+                                                "/hasil/hasil-kuisioner" ||
+                                            location.pathname ==
+                                                `/hasil/hasil-kuisioner/${id}`
+                                                ? "bg-teal-500"
+                                                : "") +
+                                            " flex items-center text-sm w-full p-2 text-black transition duration-75 rounded-lg pl-11 group hover:bg-teal-500"
+                                        }
+                                    >
+                                        Hasil Kuisioner
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        to={"/hasil/statistik"}
+                                        className={
+                                            (location.pathname ==
+                                            "/hasil/statistik"
                                                 ? "bg-teal-500"
                                                 : "") +
                                             " flex items-center text-sm w-full p-2 text-black transition duration-75 rounded-lg pl-11 group hover:bg-teal-500"

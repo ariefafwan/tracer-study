@@ -2325,14 +2325,14 @@ export const CreatePertanyaan = () => {
                             <img
                                 alt="contoh_pilihan.jpg"
                                 src={"/contoh_pilihan.jpg"}
-                                className="h-64 w-full object-cover sm:h-80 lg:h-96"
+                                className="h-max w-full object-cover"
                             />
                         ) : pertanyaanForm.tipe_pertanyaan.value ==
                           "Pilihan_2_Sisi_Pertanyaan" ? (
                             <img
                                 alt="contoh_pilihan_2_sisi_pertanyaan.jpg"
                                 src={"/contoh_pilihan_2_sisi_pertanyaan.jpg"}
-                                className="h-64 w-full object-cover sm:h-80 lg:h-96"
+                                className="h-max w-full object-cover"
                             />
                         ) : (
                             ""
@@ -2343,7 +2343,17 @@ export const CreatePertanyaan = () => {
                             <img
                                 alt="contoh_pilihan_2_sisi_pertanyaan.jpg"
                                 src={"/contoh_pilihan_2_sisi_pertanyaan.jpg"}
-                                className="h-64 w-full object-cover sm:h-80 lg:h-96"
+                                className="h-max w-full object-cover"
+                            />
+                        ) : (
+                            ""
+                        )}
+
+                        {pertanyaanForm.tipe_pertanyaan.value == "Checkbox" ? (
+                            <img
+                                alt="contoh_checkbox.jpg"
+                                src={"/contoh_checkbox.jpg"}
+                                className="h-max w-full object-cover"
                             />
                         ) : (
                             ""
@@ -2354,7 +2364,7 @@ export const CreatePertanyaan = () => {
                             <img
                                 alt="contoh_pilihan_dengan_subtopik.jpg"
                                 src={"/contoh_pilihan_dengan_subtopik.jpg"}
-                                className="h-64 w-full object-cover sm:h-80 lg:h-96"
+                                className="h-max w-full object-cover"
                             />
                         ) : (
                             ""
@@ -2369,7 +2379,7 @@ export const CreatePertanyaan = () => {
                             <img
                                 alt="contoh_inputan.jpg"
                                 src={"/contoh_inputan.jpg"}
-                                className="h-64 w-full object-cover sm:h-80 lg:h-96"
+                                className="h-max w-full object-cover"
                             />
                         ) : (
                             ""
@@ -2382,13 +2392,13 @@ export const CreatePertanyaan = () => {
                                 <img
                                     alt="contoh_pilihan.jpg"
                                     src={"/contoh_pilihan.jpg"}
-                                    className="h-64 w-full object-cover sm:h-80 lg:h-96"
+                                    className="h-max w-full object-cover"
                                 />
                             ) : (
                                 <img
                                     alt="contoh_inputan.jpg"
                                     src={"/contoh_inputan.jpg"}
-                                    className="h-64 w-full object-cover sm:h-80 lg:h-96"
+                                    className="h-max w-full object-cover"
                                 />
                             )
                         ) : (

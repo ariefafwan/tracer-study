@@ -10,8 +10,13 @@ import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
 
 export const Home = () => {
-    const { dataProfile, fetchProfile, setFetchProfile } =
-        useContext(MainContext);
+    const {
+        dataProfile,
+        fetchProfile,
+        setFetchProfile,
+        checkAuth,
+        setCheckAuth,
+    } = useContext(MainContext);
     const [dataKonten, setDataKonten] = useState([]);
     const [dataLowongan, setDataLowongan] = useState([]);
 
@@ -25,6 +30,16 @@ export const Home = () => {
     let [gambarHeader, setGambarHeader] = useState([]);
     let [tentangTracer, setTentangTracer] = useState([]);
 
+    const [intervalTiming, setIntervalTiming] = useState(1000);
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCheckAuth(true);
+            setIntervalTiming(5 * 60 * 1000);
+        }, intervalTiming);
+
+        return () => clearInterval(interval);
+    }, [checkAuth, setCheckAuth]);
+
     useEffect(() => {
         axios
             .get(`${import.meta.env.VITE_ALL_BASE_URL}/client/konten`)
@@ -33,7 +48,7 @@ export const Home = () => {
                 setDataLowongan([...res.data.lowongan]);
             })
             .catch((error) => {
-                console.log(error);
+                alert(error);
             });
     }, []);
 
@@ -68,21 +83,11 @@ export const Home = () => {
                             <p className="max-w-2xl max-lg:text-center mb-6 font-light text-gray-500 lg:mb-8 md:text-lg">
                                 {kontenHeader.length > 0
                                     ? kontenHeader[0].konten
-                                    : `Lorem ipsum, dolor sit amet consectetur
-                                adipisicing elit. Perferendis qui reprehenderit
-                                numquam nam autem! Dolorum aspernatur aliquam
-                                aut veritatis delectus. Veniam optio repudiandae
-                                dolorum atque sapiente aperiam corrupti
-                                necessitatibus ad?Lorem ipsum dolor, sit amet
-                                consectetur adipisicing elit. Temporibus sint
-                                ratione animi soluta sed impedit ab blanditiis
-                                totam dolores perferendis debitis, distinctio
-                                sequi molestiae molestias fuga harum sapiente
-                                modi iusto!Lorem`}
+                                    : ``}
                             </p>
                             <div className="max-w-2xl flex max-lg:justify-center">
-                                <a
-                                    href="#"
+                                <Link
+                                    to={"/kuisioner"}
                                     className="inline-flex items-center bg-teal-600 justify-center px-5 py-3 text-base font-medium text-center text-white rounded-lg hover:bg-teal-500"
                                 >
                                     Isi Kuisioner &nbsp;
@@ -100,7 +105,7 @@ export const Home = () => {
                                             d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"
                                         />
                                     </svg>
-                                </a>
+                                </Link>
                             </div>
                         </div>
                         <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">
@@ -131,17 +136,7 @@ export const Home = () => {
                             <p className="text-sm md:text-md text-gray-500 font-normal text-justify">
                                 {tentangTracer.length > 0
                                     ? tentangTracer[0].konten
-                                    : `Lorem ipsum, dolor sit amet consectetur
-                                adipisicing elit. Perferendis qui reprehenderit
-                                numquam nam autem! Dolorum aspernatur aliquam
-                                aut veritatis delectus. Veniam optio repudiandae
-                                dolorum atque sapiente aperiam corrupti
-                                necessitatibus ad?Lorem ipsum dolor, sit amet
-                                consectetur adipisicing elit. Temporibus sint
-                                ratione animi soluta sed impedit ab blanditiis
-                                totam dolores perferendis debitis, distinctio
-                                sequi molestiae molestias fuga harum sapiente
-                                modi iusto!Lorem`}
+                                    : ``}
                             </p>
                         </div>
                     </div>

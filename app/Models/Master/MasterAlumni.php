@@ -2,6 +2,8 @@
 
 namespace App\Models\Master;
 
+use App\Models\Hasil\HasilJawaban;
+use App\Models\Hasil\HasilKuisioner;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -28,5 +30,10 @@ class MasterAlumni extends Model
             $query->where('nama', 'like', $term)
                 ->orWhere('nim', 'like', $term);
         });
+    }
+
+    public function dataHasilKuisioner()
+    {
+        return $this->hasMany(HasilKuisioner::class, 'id_alumni', 'id');
     }
 }

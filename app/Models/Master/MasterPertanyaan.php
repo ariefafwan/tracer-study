@@ -2,6 +2,7 @@
 
 namespace App\Models\Master;
 
+use App\Models\Hasil\HasilJawaban;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\HashIdWithOrdering;
@@ -51,6 +52,11 @@ class MasterPertanyaan extends Model
     public function dataChildren()
     {
         return $this->hasMany(self::class, 'id_parent', 'id');
+    }
+
+    public function dataHasilJawaban()
+    {
+        return $this->hasMany(HasilJawaban::class, 'id_pertanyaan', 'id');
     }
 
     // protected static function boot()

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BiodataController;
 use App\Http\Controllers\Api\ClientWebsiteController;
+use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\Konten\FAQController;
 use App\Http\Controllers\Api\Konten\KontenWebsiteController;
 use App\Http\Controllers\Api\Konten\LowonganController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\Api\Master\DosenController;
 use App\Http\Controllers\Api\Master\FakultasController;
 use App\Http\Controllers\Api\Master\KategoriPertanyaanController;
 use App\Http\Controllers\Api\Master\ProgramStudiController;
+use App\Http\Controllers\Api\Pertanyaan\HasilKuisionerController;
 use App\Http\Controllers\Api\Pertanyaan\PertanyaanController;
 
 /*
@@ -31,16 +33,26 @@ use App\Http\Controllers\Api\Pertanyaan\PertanyaanController;
 // });
 
 Route::post('login', [AuthController::class, 'login']);
+Route::get('getAuthenticatedUser', [AuthController::class, 'getAuthenticatedUser']);
 
 Route::group(['prefix' => 'client'], function () {
     Route::get('/profile', [ClientWebsiteController::class, 'index']);
     Route::get('/konten', [ClientWebsiteController::class, 'konten']);
     Route::get('/lowongan', [ClientWebsiteController::class, 'lowongan']);
     Route::get('/data', [ClientWebsiteController::class, 'data']);
+    Route::get('/pertanyaan', [ClientWebsiteController::class, 'pertanyaan']);
+    Route::get('/checkAlumni', [ClientWebsiteController::class, 'checkAlumni']);
+    Route::get('/programstudi', [ClientWebsiteController::class, 'programstudi']);
+    Route::post('/kuisioner', [ClientWebsiteController::class, 'kuisioner']);
+});
+
+Route::group(['prefix' => 'dashboard'], function () {
+    Route::get('/dashboard', [DashboardController::class, 'dashboard']);
+    Route::get('/grafik_kuisioner', [DashboardController::class, 'grafik_kuisioner']);
+    Route::get('/grafik_prodi_kuisioner', [DashboardController::class, 'grafik_prodi_kuisioner']);
 });
 
 Route::middleware(('jwt'))->group(function () {
-
     Route::group(['prefix' => 'pengguna'], function () {
         Route::group(['prefix' => 'alumni'], function () {
             Route::get('/', [AlumniController::class, 'index']);
@@ -99,6 +111,12 @@ Route::middleware(('jwt'))->group(function () {
             Route::get('/edit/{id}', [PertanyaanController::class, 'edit']);
             Route::post('/update', [PertanyaanController::class, 'update']);
             Route::delete('/delete/{id}', [PertanyaanController::class, 'delete']);
+        });
+
+        Route::group(['prefix' => 'hasil'], function () {
+            Route::get('/', [HasilKuisionerController::class, 'index']);
+            Route::get('/show_hasil/{id}', [HasilKuisionerController::class, 'show_hasil']);
+            Route::delete('/delete/{id}', [HasilKuisionerController::class, 'delete']);
         });
     });
 

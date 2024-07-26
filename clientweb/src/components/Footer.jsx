@@ -40,7 +40,7 @@ export const Footer = () => {
                                           import.meta.env
                                               .VITE_AUTH_MAIN_BASE_URL
                                       }/storage/Profile/Logo/${profile.logo}`
-                                    : "/profil_img.jpg"
+                                    : ""
                             }
                             alt=""
                         />

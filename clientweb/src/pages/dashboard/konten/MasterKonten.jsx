@@ -320,10 +320,7 @@ export const MasterKonten = () => {
                             }
                             inputsearch={search}
                             changeSearch={(e) => setSearch(e.target.value)}
-                            buttonModal={() => {
-                                setHeaderModal("Tambah Data");
-                                setModalKonten(true);
-                            }}
+                            buttonModal={false}
                         >
                             {allData.data.length > 0 ? (
                                 loader == false ? (
@@ -447,6 +444,7 @@ export const MasterKonten = () => {
                                     nama: e.target.value,
                                 })
                             }
+                            disabled
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
                             placeholder="Nama Konten..."
                             required
@@ -468,6 +466,7 @@ export const MasterKonten = () => {
                                     tipe_konten: e.target.value,
                                 })
                             }
+                            disabled
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
                             required
                         >

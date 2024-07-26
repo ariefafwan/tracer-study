@@ -17,13 +17,16 @@ import { MasterKonten } from "./pages/dashboard/konten/MasterKonten";
 import { MasterLowongan } from "./pages/dashboard/konten/MasterLowongan/MasterLowongan";
 import { Pertanyaan } from "./pages/dashboard/pertanyaan/Pertanyaan";
 import { KategoriPertanyaan } from "./pages/dashboard/pertanyaan/KategoriPertanyaan";
-import { Statistik } from "./pages/dashboard/pertanyaan/Statistik";
+import { Statistik } from "./pages/dashboard/hasil/Statistik";
 import { Profile } from "./pages/dashboard/Profile";
 import { MainProvider } from "./Context/MainContext";
 import { EditLowongan } from "./pages/dashboard/konten/MasterLowongan/EditLowongan";
 import { CreateLowongan } from "./pages/dashboard/konten/MasterLowongan/CreateLowongan";
 import { CreatePertanyaan } from "./pages/dashboard/pertanyaan/Pertanyaan/CreatePertanyaan";
 import { EditPertanyaan } from "./pages/dashboard/pertanyaan/Pertanyaan/EditPertanyaan";
+import { Kuisioner } from "./pages/client/Kuisioner";
+import { HasilPertanyaan } from "./pages/dashboard/hasil/HasilPertanyaan";
+import { ShowHasilKuisioner } from "./pages/dashboard/hasil/ShowHasilKuisioner";
 
 const ErrorPage = () => {
     return (
@@ -46,6 +49,10 @@ function App() {
                             element={<Lowongan></Lowongan>}
                         ></Route>
                         <Route path="/faq" element={<Faq></Faq>}></Route>
+                        <Route
+                            path="/kuisioner"
+                            element={<Kuisioner></Kuisioner>}
+                        ></Route>
                         <Route
                             path="/login"
                             element={
@@ -175,7 +182,23 @@ function App() {
                             }
                         ></Route>
                         <Route
-                            path="/pertanyaan/statistik"
+                            path="/hasil/hasil-kuisioner"
+                            element={
+                                <Authenticated>
+                                    <HasilPertanyaan></HasilPertanyaan>
+                                </Authenticated>
+                            }
+                        ></Route>
+                        <Route
+                            path="/hasil/hasil-kuisioner/:id"
+                            element={
+                                <Authenticated>
+                                    <ShowHasilKuisioner></ShowHasilKuisioner>
+                                </Authenticated>
+                            }
+                        ></Route>
+                        <Route
+                            path="/hasil/statistik"
                             element={
                                 <Authenticated>
                                     <Statistik></Statistik>

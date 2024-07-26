@@ -44,7 +44,7 @@ export const Navbar = () => {
                                                   import.meta.env
                                                       .VITE_AUTH_MAIN_BASE_URL
                                               }/storage/Profile/Logo/${logo}`
-                                            : "/profil_img.jpg"
+                                            : ""
                                     }
                                     alt=""
                                 />
@@ -114,7 +114,7 @@ export const Navbar = () => {
                                         </Link>
                                     </li>
                                     <li>
-                                        <a
+                                        <Link
                                             className={
                                                 (location.pathname ==
                                                 "/kuisioner"
@@ -122,10 +122,10 @@ export const Navbar = () => {
                                                     : "text-gray-500 hover:text-gray-500/75") +
                                                 " transition"
                                             }
-                                            href="#"
+                                            to={"/kuisioner"}
                                         >
                                             Kuisioner
-                                        </a>
+                                        </Link>
                                     </li>
                                 </ul>
                             </nav>

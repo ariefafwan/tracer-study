@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('hasil_jawaban_pertanyaan', function (Blueprint $table) {
+        Schema::create('hasil_jawaban_sub_topik', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('id_hasil_jawaban')->constrained('hasil_jawaban')->references('id')->onDelete('restrict')->onUpdate('cascade');
-            $table->foreignUuid('id_pilihan_jawaban')->nullable()->constrained('master_pilihan_jawaban')->references('id')->onDelete('restrict')->onUpdate('cascade');
-            $table->text('jawaban_input')->nullable();
-            $table->string('jawaban_pilihan_lainnya')->nullable();
+            $table->foreignUuid('id_sub_topik')->constrained('master_sub_topik_pertanyaan')->references('id')->onDelete('restrict')->onUpdate('cascade');
+            $table->text('jawaban');
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hasil_jawaban_pertanyaan');
+        Schema::dropIfExists('hasil_jawaban_sub_topik');
     }
 };

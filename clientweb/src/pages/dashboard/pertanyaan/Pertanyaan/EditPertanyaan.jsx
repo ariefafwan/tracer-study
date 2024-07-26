@@ -272,6 +272,7 @@ export const EditPertanyaan = () => {
                 var filter = res.data.data_sub_pertanyaan.filter(
                     (data) => data.id_pilihan_jawaban !== null
                 );
+
                 setPertanyaanForm({
                     id: res.data.id,
                     urutan: res.data.urutan,
@@ -285,10 +286,16 @@ export const EditPertanyaan = () => {
                         value: res.data.tipe,
                     },
                     jenis_sub_pertanyaan: {
-                        label: res.data.data_sub_pertanyaan[0]
-                            .jenis_subpertanyaan,
-                        value: res.data.data_sub_pertanyaan[0]
-                            .jenis_subpertanyaan,
+                        label:
+                            res.data.data_sub_pertanyaan.length > 0
+                                ? res.data.data_sub_pertanyaan[0]
+                                      .jenis_subpertanyaan
+                                : "",
+                        value:
+                            res.data.data_sub_pertanyaan.length > 0
+                                ? res.data.data_sub_pertanyaan[0]
+                                      .jenis_subpertanyaan
+                                : "",
                     },
                     id_parent: {
                         label:
@@ -2385,14 +2392,14 @@ export const EditPertanyaan = () => {
                             <img
                                 alt="contoh_pilihan.jpg"
                                 src={"/contoh_pilihan.jpg"}
-                                className="h-64 w-full object-cover sm:h-80 lg:h-96"
+                                className="h-max w-full object-cover"
                             />
                         ) : pertanyaanForm.tipe_pertanyaan.value ==
                           "Pilihan_2_Sisi_Pertanyaan" ? (
                             <img
                                 alt="contoh_pilihan_2_sisi_pertanyaan.jpg"
                                 src={"/contoh_pilihan_2_sisi_pertanyaan.jpg"}
-                                className="h-64 w-full object-cover sm:h-80 lg:h-96"
+                                className="h-max w-full object-cover"
                             />
                         ) : (
                             ""
@@ -2403,7 +2410,17 @@ export const EditPertanyaan = () => {
                             <img
                                 alt="contoh_pilihan_2_sisi_pertanyaan.jpg"
                                 src={"/contoh_pilihan_2_sisi_pertanyaan.jpg"}
-                                className="h-64 w-full object-cover sm:h-80 lg:h-96"
+                                className="h-max w-full object-cover"
+                            />
+                        ) : (
+                            ""
+                        )}
+
+                        {pertanyaanForm.tipe_pertanyaan.value == "Checkbox" ? (
+                            <img
+                                alt="contoh_checkbox.jpg"
+                                src={"/contoh_checkbox.jpg"}
+                                className="h-max w-full object-cover"
                             />
                         ) : (
                             ""
@@ -2414,7 +2431,7 @@ export const EditPertanyaan = () => {
                             <img
                                 alt="contoh_pilihan_dengan_subtopik.jpg"
                                 src={"/contoh_pilihan_dengan_subtopik.jpg"}
-                                className="h-64 w-full object-cover sm:h-80 lg:h-96"
+                                className="h-max w-full object-cover"
                             />
                         ) : (
                             ""
@@ -2429,7 +2446,7 @@ export const EditPertanyaan = () => {
                             <img
                                 alt="contoh_inputan.jpg"
                                 src={"/contoh_inputan.jpg"}
-                                className="h-64 w-full object-cover sm:h-80 lg:h-96"
+                                className="h-max w-full object-cover"
                             />
                         ) : (
                             ""
@@ -2442,13 +2459,13 @@ export const EditPertanyaan = () => {
                                 <img
                                     alt="contoh_pilihan.jpg"
                                     src={"/contoh_pilihan.jpg"}
-                                    className="h-64 w-full object-cover sm:h-80 lg:h-96"
+                                    className="h-max w-full object-cover"
                                 />
                             ) : (
                                 <img
                                     alt="contoh_inputan.jpg"
                                     src={"/contoh_inputan.jpg"}
-                                    className="h-64 w-full object-cover sm:h-80 lg:h-96"
+                                    className="h-max w-full object-cover"
                                 />
                             )
                         ) : (

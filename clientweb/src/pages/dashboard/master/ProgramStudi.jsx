@@ -523,7 +523,7 @@ export const ProgramStudi = () => {
                             htmlFor="nama"
                             className="block mb-2 text-sm font-medium text-gray-900"
                         >
-                            Nama Fakultas
+                            Nama Program Studi
                         </label>
                         <input
                             type="text"

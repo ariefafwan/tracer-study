@@ -1,14 +1,26 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Head } from "../../components/Head";
 import { GuestLayout } from "../../layouts/GuestLayout";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { CardLowongan } from "../../components/CardLowongan";
+import { MainContext } from "../../Context/MainContext";
 import { Loader } from "../../components/Loader";
 
 export const Lowongan = () => {
+    const { checkAuth, setCheckAuth } = useContext(MainContext);
+    const [intervalTiming, setIntervalTiming] = useState(1000);
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCheckAuth(true);
+            setIntervalTiming(5 * 60 * 1000);
+        }, intervalTiming);
+
+        return () => clearInterval(interval);
+    }, [checkAuth, setCheckAuth]);
+
     const [ordering, setOrdering] = useState("");
     const [dataLowongan, setDataLowongan] = useState({
         current_page: 1,

@@ -37,11 +37,12 @@ class LowonganController extends Controller
         $validator = Validator::make($request->all(), [
             'judul_lowongan' => 'required',
             'nama_perusahaan' => 'required',
+            'bidang_usaha.value' => 'required',
             'logo_perusahaan' => 'required',
             'desk' => 'required',
             'tanggal_mulai' => 'required',
             'tanggal_selesai' => 'required',
-            'data_kualifikasi_umum.*' => 'required'
+            'data_kualifikasi_umum.*.value' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -99,12 +100,12 @@ class LowonganController extends Controller
         $validator = Validator::make($request->all(), [
             'judul_lowongan' => 'required',
             'nama_perusahaan' => 'required',
-            'bidang_usaha' => 'required',
+            'bidang_usaha.value' => 'required',
             'desk' => 'required',
             'tanggal_mulai' => 'required',
             'tanggal_selesai' => 'required',
             'data_kualifikasi_prodi.*' => 'required',
-            'data_kualifikasi_umum.*' => 'required'
+            'data_kualifikasi_umum.*.value' => 'required'
         ]);
 
         if ($validator->fails()) {
