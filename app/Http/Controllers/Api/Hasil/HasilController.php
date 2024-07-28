@@ -1,16 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Api\Pertanyaan;
+namespace App\Http\Controllers\Api\Hasil;
 
 use App\Http\Controllers\Controller;
 use App\Models\Hasil\HasilJawaban;
 use App\Models\Hasil\HasilKuisioner;
 use App\Models\Master\MasterAlumni;
+use App\Models\Master\MasterFakultas;
+use App\Models\Master\MasterKategoriPertanyaan;
 use App\Models\Master\MasterPertanyaan;
+use App\Models\Master\MasterProgramStudi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class HasilKuisionerController extends Controller
+class HasilController extends Controller
 {
     public function index()
     {
@@ -34,11 +37,18 @@ class HasilKuisionerController extends Controller
             ->when($formdate && $formke, function ($q) use ($formdate, $formke) {
                 $q->whereBetween('tanggal_pengisian', [$formdate, $formke]);
             })
-            ->orderBy('tanggal_pengisian', 'asc')
+            ->orderBy('tanggal_pengisian', 'desc')
             ->search(trim($search_value))
             ->paginate($paginate);
 
         return response(json_encode($data), 200);
+    }
+
+    public function create()
+    {
+        $prodi = MasterProgramStudi::orderBy('nama')->get();
+        $fakultas = MasterFakultas::orderBy('nama')->get();
+        return response()->json(compact('prodi', 'fakultas'), 200);
     }
 
     public function show_hasil($id_hasil_kuisioner)
@@ -62,6 +72,7 @@ class HasilKuisionerController extends Controller
         $alumni = MasterAlumni::with('dataProdi.dataFakultas')->whereHas('dataHasilKuisioner', function ($query) use ($id_hasil_kuisioner) {
             $query->where('id', $id_hasil_kuisioner);
         })->first();
+
         return response()->json(compact('data', 'pertanyaan', 'pertanyaanOptional', 'alumni'), 200);
     }
 

@@ -112,53 +112,53 @@ export const DashboardLayout = ({ children }) => {
                         </div>
                     </div>
                 </div>
-            </nav>
-            {/* dropdown */}
-            <div
-                className={
-                    (dropdownNavbar == true ? "absolute" : "hidden") +
-                    " top-10 right-5 z-50 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                }
-            >
-                <div className="py-1" role="none">
-                    <div className="px-4 py-3" role="none">
-                        <p className="text-sm text-gray-900" role="none">
-                            {profile.nama}
-                        </p>
-                        <p
-                            className="text-sm font-medium text-gray-900 truncate"
-                            role="none"
+                {/* dropdown */}
+                <div
+                    className={
+                        (dropdownNavbar == true ? "absolute" : "hidden") +
+                        " top-10 right-5 z-50 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                    }
+                >
+                    <div className="py-1" role="none">
+                        <div className="px-4 py-3" role="none">
+                            <p className="text-sm text-gray-900" role="none">
+                                {profile.nama}
+                            </p>
+                            <p
+                                className="text-sm font-medium text-gray-900 truncate"
+                                role="none"
+                            >
+                                {profile.email}
+                            </p>
+                        </div>
+                        <button
+                            className="inline-flex border-t-2 border-gray-300 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                            type="button"
+                            onClick={() => {
+                                Cookies.remove("token");
+                                navigate("/login");
+                            }}
+                            id="menu-item-2"
                         >
-                            {profile.email}
-                        </p>
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth="1.5"
+                                stroke="currentColor"
+                                className="size-5 my-auto"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"
+                                />
+                            </svg>
+                            &nbsp;<span>Sign Out</span>
+                        </button>
                     </div>
-                    <button
-                        className="inline-flex border-t-2 border-gray-300 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                        type="button"
-                        onClick={() => {
-                            Cookies.remove("token");
-                            navigate("/login");
-                        }}
-                        id="menu-item-2"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth="1.5"
-                            stroke="currentColor"
-                            className="size-5 my-auto"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"
-                            />
-                        </svg>
-                        &nbsp;<span>Sign Out</span>
-                    </button>
                 </div>
-            </div>
+            </nav>
             <SideBar></SideBar>
             <div className="p-4 sm:ml-72">{children}</div>
         </div>

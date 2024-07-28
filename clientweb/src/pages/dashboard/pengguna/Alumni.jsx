@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
+import Select from "react-select";
 
 export const Alumni = () => {
     let navigate = useNavigate();
@@ -19,21 +20,50 @@ export const Alumni = () => {
     const [alumniForm, setAlumniForm] = useState({
         id: 0,
         nama: "",
-        id_program_studi: "",
+        id_program_studi: {
+            value: "",
+            label: "",
+            id_fakultas: "",
+        },
         jenis_kelamin: "Laki-Laki",
         nim: "",
         nik: "",
         npwp: "",
         status: "",
+        tahun_lulus: {
+            value: "",
+            label: "",
+        },
     });
+
+    const [pilihanTahun, setPilihanTahun] = useState([]);
+
+    useEffect(() => {
+        const createYear = (start, stop, step) =>
+            Array.from(
+                { length: (stop - start) / step + 1 },
+                (_, i) => start + i * step
+            );
+        createYear(new Date().getFullYear(), 1901, -1).map((year) => {
+            setPilihanTahun((prev) => [...prev, { label: year, value: year }]);
+        });
+    }, []);
+
     const [fakultas, setFakultas] = useState("");
     const [fakultasAlumni, setFakultasAlumni] = useState([]);
-    const [selectFakultas, setSelectFakultas] = useState("");
+    const [selectFakultas, setSelectFakultas] = useState({
+        value: "",
+        label: "",
+    });
     const [selectProdi, setSelectProdi] = useState([]);
     const [prodi, setProdi] = useState("");
     const [prodiAll, setProdiAll] = useState([]);
     const [prodiAlumni, setProdiAlumni] = useState([]);
     const [filterStatus, setFilterStatus] = useState("");
+    const [filterTahunLulus, setFilterTahunLulus] = useState({
+        value: "",
+        label: "Lulusan",
+    });
     const [loader, setLoader] = useState(false);
     const [reloadTable, setReloadTable] = useState(false);
     const [headerModal, setHeaderModal] = useState("");
@@ -65,7 +95,9 @@ export const Alumni = () => {
             .get(
                 `${
                     import.meta.env.VITE_ALL_BASE_URL
-                }/pengguna/alumni?page=${page}&q=${search}&paginate=${paginate}&fakultas=${fakultas}&prodi=${prodi}&status=${filterStatus}`,
+                }/pengguna/alumni?page=${page}&q=${search}&paginate=${paginate}&fakultas=${fakultas}&prodi=${prodi}&status=${filterStatus}&tahun_lulus=${
+                    filterTahunLulus.value
+                }`,
                 {
                     headers: {
                         Authorization: "Bearer " + Cookies.get("token"),
@@ -138,8 +170,8 @@ export const Alumni = () => {
                 }
             )
             .then((res) => {
-                setFakultasAlumni([...res.data.fakultas]);
-                setProdiAll([...res.data.prodi]);
+                setFakultasAlumni(res.data.fakultas);
+                setProdiAll(res.data.prodi);
                 setLoader(false);
             })
             .catch((error) => {
@@ -163,7 +195,7 @@ export const Alumni = () => {
 
     useEffect(() => {
         setSelectProdi(
-            prodiAll.filter((prod) => prod.id_fakultas == selectFakultas)
+            prodiAll.filter((prod) => prod.id_fakultas == selectFakultas.value)
         );
     }, [selectFakultas, setSelectFakultas]);
 
@@ -177,16 +209,27 @@ export const Alumni = () => {
 
     useEffect(() => {
         if (modalAlumni == false) {
-            setSelectFakultas("");
+            setSelectFakultas({
+                value: "",
+                label: "",
+            });
             setAlumniForm({
                 id: 0,
                 nama: "",
-                id_program_studi: "",
+                id_program_studi: {
+                    value: "",
+                    label: "",
+                    id_fakultas: "",
+                },
                 jenis_kelamin: "Laki-Laki",
                 nim: "",
                 nik: "",
                 npwp: "",
                 status: "",
+                tahun_lulus: {
+                    value: "",
+                    label: "",
+                },
             });
         }
 
@@ -304,16 +347,27 @@ export const Alumni = () => {
                 }
             )
             .then((res) => {
-                setSelectFakultas(res.data.data_prodi.id_fakultas);
+                setSelectFakultas({
+                    value: res.data.data_prodi.id_fakultas,
+                    label: res.data.data_prodi.data_fakultas.nama,
+                });
                 setAlumniForm({
                     id: res.data.id,
                     nama: res.data.nama,
-                    id_program_studi: res.data.id_program_studi,
+                    id_program_studi: {
+                        value: res.data.id_program_studi,
+                        label: res.data.data_prodi.nama,
+                        id_fakultas: res.data.data_prodi.id_fakultas,
+                    },
                     jenis_kelamin: res.data.jenis_kelamin,
                     nim: res.data.nim,
                     nik: res.data.nik,
                     npwp: res.data.npwp == null ? "" : res.data.npwp,
                     status: res.data.status,
+                    tahun_lulus: {
+                        value: res.data.tahun_lulus,
+                        label: res.data.tahun_lulus,
+                    },
                 });
                 setHeaderModal("Edit Data");
                 setModalAlumni(true);
@@ -478,9 +532,9 @@ export const Alumni = () => {
                                                 return (
                                                     <option
                                                         key={x}
-                                                        value={kat.id}
+                                                        value={kat.value}
                                                     >
-                                                        {kat.nama}
+                                                        {kat.label}
                                                     </option>
                                                 );
                                             })}
@@ -508,9 +562,9 @@ export const Alumni = () => {
                                                 return (
                                                     <option
                                                         key={x}
-                                                        value={kat.id}
+                                                        value={kat.value}
                                                     >
-                                                        {kat.nama}
+                                                        {kat.label}
                                                     </option>
                                                 );
                                             })}
@@ -524,6 +578,17 @@ export const Alumni = () => {
                                                 <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
                                             </svg>
                                         </div>
+                                    </div>
+                                    <div className="relative">
+                                        <Select
+                                            id="tahun_lulus"
+                                            onChange={(value) =>
+                                                setFilterTahunLulus(value)
+                                            }
+                                            required
+                                            value={filterTahunLulus}
+                                            options={pilihanTahun}
+                                        />
                                     </div>
                                     <div className="relative">
                                         <select
@@ -735,58 +800,44 @@ export const Alumni = () => {
                                 htmlFor="fakultas"
                                 className="block mb-2 text-sm font-medium text-gray-900"
                             >
-                                Fakultas
+                                Pilih Fakultas
                             </label>
-                            <select
-                                value={selectFakultas}
+                            <Select
                                 id="fakultas"
-                                onChange={(e) =>
-                                    setSelectFakultas(e.target.value)
-                                }
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                                onChange={(value) => setSelectFakultas(value)}
                                 required
-                            >
-                                <option value="">Pilih Fakultas</option>
-                                {fakultasAlumni.map((kat, x) => {
-                                    return (
-                                        <option key={x} value={kat.id}>
-                                            {kat.nama}
-                                        </option>
-                                    );
-                                })}
-                            </select>
+                                value={selectFakultas}
+                                options={fakultasAlumni}
+                                placeholder="Pilih Fakultas"
+                            />
                         </div>
                         <div className="w-full text-black">
                             <label
                                 htmlFor="fakultas"
                                 className="block mb-2 text-sm font-medium text-gray-900"
                             >
-                                Program Studi
+                                Pilih Program Studi
                             </label>
-                            <select
-                                value={alumniForm.id_program_studi}
+                            <Select
                                 id="fakultas"
-                                onChange={(e) =>
+                                onChange={(value) =>
                                     setAlumniForm({
                                         ...alumniForm,
-                                        id_program_studi: e.target.value,
+                                        id_program_studi: {
+                                            value: value.value,
+                                            label: value.label,
+                                            id_fakultas: selectFakultas.value,
+                                        },
                                     })
                                 }
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
                                 required
-                                disabled={selectFakultas == ""}
-                            >
-                                <option value="">Pilih Program Studi</option>
-                                {selectProdi.map((kat, x) => {
-                                    return (
-                                        <option key={x} value={kat.id}>
-                                            {kat.nama}
-                                        </option>
-                                    );
-                                })}
-                            </select>
+                                value={alumniForm.id_program_studi}
+                                options={selectProdi}
+                                isDisabled={selectFakultas.value == ""}
+                                placeholder="Pilih Program Studi"
+                            />
                         </div>
-                        <div className="w-full text-black">
+                        <div className="w-full col-span-2 text-black">
                             <label
                                 htmlFor="nama"
                                 className="block mb-2 text-sm font-medium text-gray-900"
@@ -828,6 +879,27 @@ export const Alumni = () => {
                                 min={1}
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
                                 required
+                            />
+                        </div>
+                        <div className="w-full text-black">
+                            <label
+                                htmlFor="tahun_lulus"
+                                className="block mb-2 text-sm font-medium text-gray-900"
+                            >
+                                Pilih Tahun Lulus
+                            </label>
+                            <Select
+                                id="tahun_lulus"
+                                onChange={(value) =>
+                                    setAlumniForm({
+                                        ...alumniForm,
+                                        tahun_lulus: value,
+                                    })
+                                }
+                                required
+                                value={alumniForm.tahun_lulus}
+                                options={pilihanTahun}
+                                placeholder="Pilih Tahun Lulus"
                             />
                         </div>
                         <div className="w-full text-black">

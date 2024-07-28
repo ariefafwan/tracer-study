@@ -1,19 +1,23 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import { DashboardLayout } from "../../../layouts/DashboardLayout";
-import { TableData } from "../../../components/TableData";
-import { ButtonEdit } from "../../../components/ButtonEdit";
-import { ButtonDelete } from "../../../components/ButtonDelete";
-import { ButtonPagination } from "../../../components/ButtonPagination";
-import { ModalPrimary } from "../../../components/ModalPrimary";
-import { Loader } from "../../../components/Loader";
-import { useEffect, useState } from "react";
+import { ModalPrimary } from "../../../../components/ModalPrimary";
 import { Link, useNavigate } from "react-router-dom";
+import { DashboardLayout } from "../../../../layouts/DashboardLayout";
+import { TableData } from "../../../../components/TableData";
+import { ButtonEdit } from "../../../../components/ButtonEdit";
+import { ButtonDelete } from "../../../../components/ButtonDelete";
+import { ButtonPagination } from "../../../../components/ButtonPagination";
+import { ModalSecondary } from "../../../../components/ModalSecondary";
+import { Loader } from "../../../../components/Loader";
+import { useEffect, useState } from "react";
+import Select from "react-select";
+import Creatable from "react-select/creatable";
+import CreatableSelect from "react-select/creatable";
 import axios from "axios";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
 
-export const Pertanyaan = () => {
+export const MasterPertanyaan = () => {
     let navigate = useNavigate();
     const [loader, setLoader] = useState(false);
     const [reloadTable, setReloadTable] = useState(false);
@@ -193,7 +197,7 @@ export const Pertanyaan = () => {
                                             >
                                                 <th
                                                     scope="row"
-                                                    className="p-3 font-semibold text-gray-900 whitespace-nowrap"
+                                                    className="py-3 text-center font-semibold text-gray-900 whitespace-nowrap"
                                                 >
                                                     {i + allData.from}
                                                 </th>
@@ -202,7 +206,7 @@ export const Pertanyaan = () => {
                                                         all.nama_kategori_pertanyaan
                                                     }
                                                 </td>
-                                                <td className="p-3 w-fit text-black ">
+                                                <td className="py-3 text-center w-fit text-black ">
                                                     {all.urutan}
                                                 </td>
                                                 <td className="p-3 text-black">
@@ -210,7 +214,7 @@ export const Pertanyaan = () => {
                                                         {all.pertanyaan}
                                                     </p>
                                                 </td>
-                                                <td className="p-3 text-black">
+                                                <td className="py-3 text-center text-black">
                                                     <div>
                                                         <Link
                                                             type="button"

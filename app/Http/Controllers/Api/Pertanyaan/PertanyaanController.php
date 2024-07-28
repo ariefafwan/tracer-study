@@ -173,11 +173,12 @@ class PertanyaanController extends Controller
                         return response()->json(['error' => 'Urutan Pertanyaan Sudah Ada'], 422);
                     }
 
-                    $newSubTopikPertanyaan = new MasterPilihanJawaban();
-                    $newSubTopikPertanyaan->id_pertanyaan = $new->id;
-                    $newSubTopikPertanyaan->urutan = $checkbox['urutan'];
-                    $newSubTopikPertanyaan->nama_pilihan = $checkbox['value'];
-                    $newSubTopikPertanyaan->save();
+                    $newcheckbox = new MasterPilihanJawaban();
+                    $newcheckbox->id_pertanyaan = $new->id;
+                    $newcheckbox->urutan = $checkbox['urutan'];
+                    $newcheckbox->nama_pilihan = $checkbox['value'];
+                    $newcheckbox->isInput = 'Tidak';
+                    $newcheckbox->save();
                 }
             } else if ($request->tipe_pertanyaan['value'] == 'Sub_Pertanyaan') {
                 $new->id_parent = $request->id_parent['value'];
@@ -205,6 +206,7 @@ class PertanyaanController extends Controller
                         $newSubTopikPertanyaan->id_pertanyaan = $new->id;
                         $newSubTopikPertanyaan->urutan = $pilihan['urutan'];
                         $newSubTopikPertanyaan->nama_pilihan = $pilihan['value'];
+                        $newSubTopikPertanyaan->isInput = 'Tidak';
                         $newSubTopikPertanyaan->save();
                     }
                 }

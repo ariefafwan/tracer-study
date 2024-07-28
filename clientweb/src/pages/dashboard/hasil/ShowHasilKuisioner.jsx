@@ -28,6 +28,8 @@ export const ShowHasilKuisioner = () => {
         nama: "",
         nik: "",
         nim: "",
+        tahun_lulus: "",
+        npwp: "",
     });
     const [adaKuisionerLainnya, setAdaKuisionerLainnya] = useState(false);
     const [checkOptional, setCheckOptional] = useState(true);
@@ -124,7 +126,7 @@ export const ShowHasilKuisioner = () => {
             .get(
                 `${
                     import.meta.env.VITE_ALL_BASE_URL
-                }/pertanyaan/hasil/show_hasil/${id}`,
+                }/hasil/hasil/show_hasil/${id}`,
                 {
                     headers: {
                         Authorization: "Bearer " + Cookies.get("token"),
@@ -139,6 +141,11 @@ export const ShowHasilKuisioner = () => {
                     nama: res.data.alumni.nama,
                     nik: res.data.alumni.nik,
                     nim: res.data.alumni.nim,
+                    tahun_lulus: res.data.alumni.tahun_lulus,
+                    npwp:
+                        res.data.alumni.npwp == null
+                            ? "Tidak Ada Data"
+                            : res.data.alumni.npwp,
                 });
                 setFormKuisioner(
                     res.data.pertanyaan.map((data) => {
@@ -437,17 +444,7 @@ export const ShowHasilKuisioner = () => {
                                         },
                                         jawaban_input: "",
                                     };
-                                } else if (
-                                    data.data_sub_pertanyaan[0]
-                                        .jenis_subpertanyaan ==
-                                        "Inputan_Angka" ||
-                                    data.data_sub_pertanyaan[0]
-                                        .jenis_subpertanyaan ==
-                                        "Inputan_Text" ||
-                                    data.data_sub_pertanyaan[0]
-                                        .jenis_subpertanyaan ==
-                                        "Inputan_Tanggal"
-                                ) {
+                                } else {
                                     return {
                                         id_pertanyaan: data.id,
                                         pertanyaan: data.pertanyaan,
@@ -594,9 +591,26 @@ export const ShowHasilKuisioner = () => {
                                                 />
                                             </div>
                                             <div className="md:col-span-3">
+                                                <label htmlFor="lulusan">
+                                                    Tahun Lulus
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    name="lulusan"
+                                                    id="lulusan"
+                                                    value={
+                                                        dataAlumni.tahun_lulus
+                                                    }
+                                                    className="h-10 border mt-1 rounded px-4 w-full bg-gray-200"
+                                                    placeholder="..."
+                                                    required
+                                                    disabled
+                                                />
+                                            </div>
+                                            <div className="md:col-span-3">
                                                 <label htmlFor="nik">NIK</label>
                                                 <input
-                                                    type="number"
+                                                    type="text"
                                                     name="nik"
                                                     id="nik"
                                                     value={dataAlumni.nik}
@@ -661,6 +675,21 @@ export const ShowHasilKuisioner = () => {
                                                         Perempuan
                                                     </option>
                                                 </select>
+                                            </div>
+                                            <div className="md:col-span-3">
+                                                <label htmlFor="npwp">
+                                                    NPWP
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    name="npwp"
+                                                    id="npwp"
+                                                    value={dataAlumni.npwp}
+                                                    className="h-10 border mt-1 rounded px-4 w-full bg-gray-200"
+                                                    placeholder="..."
+                                                    required
+                                                    disabled
+                                                />
                                             </div>
                                         </div>
                                     </div>

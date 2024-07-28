@@ -15,6 +15,7 @@ use App\Models\Hasil\HasilKuisioner;
 use App\Models\Hasil\HasilLowongan;
 use App\Models\Konten;
 use App\Models\Master\MasterAlumni;
+use App\Models\Master\MasterKategoriPertanyaan;
 use App\Models\Master\MasterPertanyaan;
 use App\Models\Master\MasterProgramStudi;
 use Carbon\Carbon;
@@ -43,22 +44,48 @@ class ClientWebsiteController extends Controller
     {
         $paginate = request('paginate', 10);
         $search_value = request('q', '');
+        $formdate = request('daritanggal', '');
+        $formke = request('ketanggal', '');
+        $bidangusaha = request('bidang_usaha', '');
+        $prodi = request('prodi', '');
+        $arrayprodi = [];
+        if ($prodi != '') {
+            $arrayprodi = explode(',', $prodi);
+        }
         $ordering = request('ordering', '');
         $data = HasilLowongan::where('tanggal_selesai', '>=', Carbon::now()->format('Y-m-d'))
+            ->when($formdate && $formke, function ($q) use ($formdate, $formke) {
+                $q->whereBetween('tanggal_selesai', [$formdate, $formke]);
+            })->when($bidangusaha, function ($q) use ($bidangusaha) {
+                $q->where('bidang_usaha', 'like', '%' . trim($bidangusaha) . '%');
+            })->when(count($arrayprodi) > 0, function ($q) use ($arrayprodi) {
+                $q->whereHas('dataKualifikasiProdi', function ($var) use ($arrayprodi) {
+                    $var->whereIn('id_program_studi', $arrayprodi);
+                });
+            })
             ->when($ordering == 'A-Z' || $ordering == '', function ($q) {
                 $q->orderBy('judul_lowongan', 'asc');
             })->when($ordering == 'Z-A', function ($q) {
                 $q->orderBy('judul_lowongan', 'desc');
-            })->search(trim($search_value))
+            })
+            ->search(trim($search_value))
             ->paginate($paginate);
         return response(json_encode($data), 200);
     }
 
+    public function detail_lowongan($id_lowongan)
+    {
+        $data = HasilLowongan::with('dataKualifikasiProdi.dataProdi', 'dataKualifikasiUmum')
+            ->where('id', $id_lowongan)
+            ->first();
+        return response()->json($data, 200);
+    }
+
     public function data()
     {
-        $programstudi = MasterProgramStudi::get();
+        $program_studi = MasterProgramStudi::get();
         $bidang_usaha = HasilLowongan::select('bidang_usaha')->distinct()->orderBy('bidang_usaha')->get();
-        return response()->json(compact('bidang_usaha', 'programstudi'), 200);
+        return response()->json(compact('bidang_usaha', 'program_studi'), 200);
     }
 
     public function programstudi(Request $request)
@@ -193,7 +220,7 @@ class ClientWebsiteController extends Controller
             foreach ($request->optional as $key => $value2) {
                 if ($value2['isTampil']) {
                     $new = new HasilJawaban();
-                    $new->id_pertanyaan = $value['id_pertanyaan'];
+                    $new->id_pertanyaan = $value2['id_pertanyaan'];
                     $new->id_hasil_kuisioner = $hasilkuisioner->id;
                     $new->save();
 

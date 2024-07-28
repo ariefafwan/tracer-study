@@ -33,7 +33,6 @@ export const Kuisioner = () => {
     const [checkIsTampilOptional, setCheckIsTampilOptional] = useState(false);
     const [adaKuisionerLainnya, setAdaKuisionerLainnya] = useState(false);
     const [checkOptional, setCheckOptional] = useState(true);
-    const [tes, setTes] = useState(true);
     const [dataMahasiswa, setDataMahasiswa] = useState({
         id: "",
         nama: "",

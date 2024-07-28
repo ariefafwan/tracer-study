@@ -8,6 +8,7 @@ import Cookies from "js-cookie";
 import { CardLowongan } from "../../components/CardLowongan";
 import { MainContext } from "../../Context/MainContext";
 import { Loader } from "../../components/Loader";
+import Select from "react-select";
 
 export const Lowongan = () => {
     const { checkAuth, setCheckAuth } = useContext(MainContext);
@@ -22,6 +23,11 @@ export const Lowongan = () => {
     }, [checkAuth, setCheckAuth]);
 
     const [ordering, setOrdering] = useState("");
+    const [dataProgramStudi, setDataProgramStudi] = useState([]);
+    const [dataBidangUsaha, setDataBidangUsaha] = useState([]);
+    const [filterProgramStudi, setFilterProgramStudi] = useState([]);
+    const [filterBidangUsaha, setFilterBidangUsaha] = useState("");
+
     const [dataLowongan, setDataLowongan] = useState({
         current_page: 1,
         data: [],
@@ -39,38 +45,74 @@ export const Lowongan = () => {
     });
     const [loading, setLoading] = useState(true);
     const [kontenLowongan, setKontenLowongan] = useState([]);
+    const [filterTanggalDari, setFilterTanggalDari] = useState("");
+    const [filterTanggalKe, setFilterTanggalKe] = useState("");
+    const [reloadTable, setReloadTable] = useState(false);
 
     useEffect(() => {
-        if (loading == true) {
-            axios
-                .get(
-                    `${
-                        import.meta.env.VITE_ALL_BASE_URL
-                    }/client/lowongan?ordering=${ordering}`
-                )
-                .then((res) => {
-                    setDataLowongan({
-                        current_page: res.data.current_page,
-                        data: [...res.data.data],
-                        first_page_url: res.data.first_page_url,
-                        from: res.data.from,
-                        last_page: res.data.last_page,
-                        last_page_url: res.data.last_page_url,
-                        links: res.data.links,
-                        next_page_url: res.data.next_page_url,
-                        path: res.data.path,
-                        per_page: res.data.per_page,
-                        prev_page_url: res.data.prev_page_url,
-                        to: res.data.to,
-                        total: res.data.total,
-                    });
-                    setLoading(false);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+        setLoading(true);
+        setReloadTable(false);
+        if (filterTanggalDari == "" && filterTanggalKe !== "") {
+            setFilterTanggalDari(filterTanggalKe);
+        } else if (filterTanggalKe == "" && filterTanggalDari !== "") {
+            setFilterTanggalKe(filterTanggalDari);
+        } else if (filterTanggalDari > filterTanggalKe) {
+            let tanggalke = filterTanggalKe;
+            setFilterTanggalKe(filterTanggalDari);
+            setFilterTanggalDari(tanggalke);
         }
-    }, [loading, setLoading]);
+        axios
+            .get(
+                `${
+                    import.meta.env.VITE_ALL_BASE_URL
+                }/client/lowongan?ordering=${ordering}&daritanggal=${filterTanggalDari}&ketanggal=${filterTanggalKe}&bidang_usaha=${filterBidangUsaha}&prodi=${
+                    filterProgramStudi.length > 0 ? filterProgramStudi : ""
+                }`
+            )
+            .then((res) => {
+                setDataLowongan({
+                    current_page: res.data.current_page,
+                    data: [...res.data.data],
+                    first_page_url: res.data.first_page_url,
+                    from: res.data.from,
+                    last_page: res.data.last_page,
+                    last_page_url: res.data.last_page_url,
+                    links: res.data.links,
+                    next_page_url: res.data.next_page_url,
+                    path: res.data.path,
+                    per_page: res.data.per_page,
+                    prev_page_url: res.data.prev_page_url,
+                    to: res.data.to,
+                    total: res.data.total,
+                });
+                setLoading(false);
+            })
+            .catch((error) => {
+                setLoading(false);
+                alert(error);
+            });
+    }, [
+        ordering,
+        setOrdering,
+        reloadTable,
+        setReloadTable,
+        filterBidangUsaha,
+        setFilterBidangUsaha,
+        filterProgramStudi,
+        setFilterProgramStudi,
+    ]);
+
+    useEffect(() => {
+        axios
+            .get(`${import.meta.env.VITE_ALL_BASE_URL}/client/data`)
+            .then((res) => {
+                setDataBidangUsaha(res.data.bidang_usaha);
+                setDataProgramStudi(res.data.program_studi);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, []);
 
     useEffect(() => {
         axios
@@ -81,12 +123,27 @@ export const Lowongan = () => {
                         (data) => data.nama == "Lowongan Pekerjaan"
                     )
                 );
-                setLoading(false);
             })
             .catch((error) => {
-                console.log(error);
+                alert(error);
             });
     }, []);
+
+    const aturFilterProdi = (e, id) => {
+        if (e.target.checked == true) {
+            setFilterProgramStudi([...filterProgramStudi, id]);
+        } else {
+            setFilterProgramStudi(
+                filterProgramStudi.filter((data) => data != id)
+            );
+        }
+    };
+
+    // useEffect(() => {
+    //     if (filterProgramStudi.length > 0) {
+    //         console.log(filterProgramStudi);
+    //     }
+    // }, [filterProgramStudi]);
 
     return (
         <>
@@ -143,10 +200,9 @@ export const Lowongan = () => {
                                     <select
                                         id="SortBy"
                                         value={ordering}
-                                        onChange={(e) => {
-                                            setOrdering(e.target.value);
-                                            setLoading(true);
-                                        }}
+                                        onChange={(e) =>
+                                            setOrdering(e.target.value)
+                                        }
                                         className="mt-1 rounded border-gray-300 text-sm"
                                     >
                                         <option value="">A-Z</option>
@@ -184,75 +240,46 @@ export const Lowongan = () => {
                                             </summary>
 
                                             <div className="border-t border-gray-200 bg-white">
-                                                <header className="flex items-center justify-between p-4">
-                                                    <span className="text-sm text-gray-700">
-                                                        {" "}
-                                                        0 Selected{" "}
-                                                    </span>
-
-                                                    <button
-                                                        type="button"
-                                                        className="text-sm text-gray-900 underline underline-offset-4"
-                                                    >
-                                                        Reset
-                                                    </button>
-                                                </header>
-
                                                 <ul className="space-y-1 border-t border-gray-200 p-4">
-                                                    <li>
-                                                        <label
-                                                            htmlFor="FilterInStock"
-                                                            className="inline-flex items-center gap-2"
-                                                        >
-                                                            <input
-                                                                type="checkbox"
-                                                                id="FilterInStock"
-                                                                className="size-5 rounded border-gray-300"
-                                                            />
-
-                                                            <span className="text-sm font-medium text-gray-700">
-                                                                {" "}
-                                                                In Stock (5+){" "}
-                                                            </span>
-                                                        </label>
-                                                    </li>
-
-                                                    <li>
-                                                        <label
-                                                            htmlFor="FilterPreOrder"
-                                                            className="inline-flex items-center gap-2"
-                                                        >
-                                                            <input
-                                                                type="checkbox"
-                                                                id="FilterPreOrder"
-                                                                className="size-5 rounded border-gray-300"
-                                                            />
-
-                                                            <span className="text-sm font-medium text-gray-700">
-                                                                {" "}
-                                                                Pre Order (3+){" "}
-                                                            </span>
-                                                        </label>
-                                                    </li>
-
-                                                    <li>
-                                                        <label
-                                                            htmlFor="FilterOutOfStock"
-                                                            className="inline-flex items-center gap-2"
-                                                        >
-                                                            <input
-                                                                type="checkbox"
-                                                                id="FilterOutOfStock"
-                                                                className="size-5 rounded border-gray-300"
-                                                            />
-
-                                                            <span className="text-sm font-medium text-gray-700">
-                                                                {" "}
-                                                                Out of Stock
-                                                                (10+){" "}
-                                                            </span>
-                                                        </label>
-                                                    </li>
+                                                    {dataProgramStudi.map(
+                                                        (data) => (
+                                                            <li key={data.id}>
+                                                                <label
+                                                                    htmlFor={
+                                                                        data.id
+                                                                    }
+                                                                    className="inline-flex items-center gap-2"
+                                                                >
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        id={
+                                                                            data.id
+                                                                        }
+                                                                        onChange={(
+                                                                            e
+                                                                        ) =>
+                                                                            aturFilterProdi(
+                                                                                e,
+                                                                                data.id
+                                                                            )
+                                                                        }
+                                                                        value={filterProgramStudi.includes(
+                                                                            data.id
+                                                                        )}
+                                                                        checked={filterProgramStudi.includes(
+                                                                            data.id
+                                                                        )}
+                                                                        className="size-5 rounded border-gray-300"
+                                                                    />
+                                                                    <span className="text-sm font-medium text-gray-700">
+                                                                        {
+                                                                            data.nama
+                                                                        }
+                                                                    </span>
+                                                                </label>
+                                                            </li>
+                                                        )
+                                                    )}
                                                 </ul>
                                             </div>
                                         </details>
@@ -283,54 +310,60 @@ export const Lowongan = () => {
 
                                             <div className="border-t border-gray-200 bg-white">
                                                 <header className="flex items-center justify-between p-4">
-                                                    <span className="text-sm text-gray-700">
-                                                        {" "}
-                                                        The highest price is
-                                                        $600{" "}
-                                                    </span>
-
                                                     <button
                                                         type="button"
+                                                        onClick={() => {
+                                                            setFilterBidangUsaha(
+                                                                ""
+                                                            );
+                                                        }}
                                                         className="text-sm text-gray-900 underline underline-offset-4"
                                                     >
                                                         Reset
                                                     </button>
                                                 </header>
 
-                                                <div className="border-t border-gray-200 p-4">
-                                                    <div className="flex justify-between gap-4">
-                                                        <label
-                                                            htmlFor="FilterPriceFrom"
-                                                            className="flex items-center gap-2"
-                                                        >
-                                                            <span className="text-sm text-gray-600">
-                                                                $
-                                                            </span>
-
-                                                            <input
-                                                                type="number"
-                                                                id="FilterPriceFrom"
-                                                                placeholder="From"
-                                                                className="w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
-                                                            />
-                                                        </label>
-
-                                                        <label
-                                                            htmlFor="FilterPriceTo"
-                                                            className="flex items-center gap-2"
-                                                        >
-                                                            <span className="text-sm text-gray-600">
-                                                                $
-                                                            </span>
-
-                                                            <input
-                                                                type="number"
-                                                                id="FilterPriceTo"
-                                                                placeholder="To"
-                                                                className="w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
-                                                            />
-                                                        </label>
-                                                    </div>
+                                                <div className="border-t border-gray-200 bg-white">
+                                                    <ul className="space-y-1 border-t border-gray-200 p-4">
+                                                        {dataBidangUsaha.map(
+                                                            (data, i) => (
+                                                                <li
+                                                                    key={i}
+                                                                    className="mb-3"
+                                                                >
+                                                                    <label
+                                                                        htmlFor={
+                                                                            data.bidang_usaha
+                                                                        }
+                                                                        className="inline-flex text-xs items-center gap-2"
+                                                                    >
+                                                                        <input
+                                                                            type="radio"
+                                                                            id={
+                                                                                data.bidang_usaha
+                                                                            }
+                                                                            onChange={() => {
+                                                                                setFilterBidangUsaha(
+                                                                                    data.bidang_usaha
+                                                                                );
+                                                                            }}
+                                                                            checked={
+                                                                                filterBidangUsaha ===
+                                                                                data.bidang_usaha
+                                                                            }
+                                                                            name="filter_bidang_usaha"
+                                                                            className="rounded border-gray-300"
+                                                                        />
+                                                                        <span className="text-xs font-medium text-gray-700">
+                                                                            {
+                                                                                data.bidang_usaha
+                                                                            }
+                                                                        </span>
+                                                                    </label>
+                                                                </li>
+                                                            )
+                                                        )}
+                                                    </ul>
                                                 </div>
                                             </div>
                                         </details>
@@ -357,130 +390,105 @@ export const Lowongan = () => {
                                                 </span>
                                             </summary>
 
-                                            <div className="border-t border-gray-200 bg-white">
-                                                <header className="flex items-center justify-between p-4">
-                                                    <span className="text-sm text-gray-700">
-                                                        {" "}
-                                                        0 Selected{" "}
-                                                    </span>
-
-                                                    <button
-                                                        type="button"
-                                                        className="text-sm text-gray-900 underline underline-offset-4"
-                                                    >
-                                                        Reset
-                                                    </button>
-                                                </header>
-
-                                                <ul className="space-y-1 border-t border-gray-200 p-4">
-                                                    <li>
-                                                        <label
-                                                            htmlFor="FilterRed"
-                                                            className="inline-flex items-center gap-2"
-                                                        >
+                                            <div className="border-t border-gray-200 bg-white w-full">
+                                                <div className="space-y-1 border-t border-gray-200 p-4">
+                                                    <div className="block w-full text-xs">
+                                                        <p className="m-auto text-xs font-semibold">
+                                                            Dari
+                                                        </p>
+                                                        <div className="relative">
                                                             <input
-                                                                type="checkbox"
-                                                                id="FilterRed"
-                                                                className="size-5 rounded border-gray-300"
+                                                                type="date"
+                                                                id="tanggal"
+                                                                value={
+                                                                    filterTanggalDari
+                                                                }
+                                                                onChange={(e) =>
+                                                                    setFilterTanggalDari(
+                                                                        e.target
+                                                                            .value
+                                                                    )
+                                                                }
+                                                                className="h-full border block appearance-none w-full bg-white border-gray-300 text-black py-2 px-2 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                                                placeholder="Tanggal.."
                                                             />
-
-                                                            <span className="text-sm font-medium text-gray-700">
-                                                                {" "}
-                                                                Red{" "}
-                                                            </span>
-                                                        </label>
-                                                    </li>
-
-                                                    <li>
-                                                        <label
-                                                            htmlFor="FilterBlue"
-                                                            className="inline-flex items-center gap-2"
-                                                        >
+                                                        </div>
+                                                        <p className="m-auto text-xs font-semibold">
+                                                            Ke
+                                                        </p>
+                                                        <div className="relative">
                                                             <input
-                                                                type="checkbox"
-                                                                id="FilterBlue"
-                                                                className="size-5 rounded border-gray-300"
+                                                                type="date"
+                                                                id="tanggal"
+                                                                value={
+                                                                    filterTanggalKe
+                                                                }
+                                                                onChange={(e) =>
+                                                                    setFilterTanggalKe(
+                                                                        e.target
+                                                                            .value
+                                                                    )
+                                                                }
+                                                                className="h-full border block appearance-none w-full bg-white border-gray-300 text-black py-2 px-2 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                                                placeholder="Tanggal.."
                                                             />
-
-                                                            <span className="text-sm font-medium text-gray-700">
-                                                                {" "}
-                                                                Blue{" "}
-                                                            </span>
-                                                        </label>
-                                                    </li>
-
-                                                    <li>
-                                                        <label
-                                                            htmlFor="FilterGreen"
-                                                            className="inline-flex items-center gap-2"
+                                                        </div>
+                                                        <button
+                                                            className="m-auto mt-4"
+                                                            type="button"
+                                                            onClick={() => {
+                                                                setReloadTable(
+                                                                    true
+                                                                );
+                                                            }}
                                                         >
-                                                            <input
-                                                                type="checkbox"
-                                                                id="FilterGreen"
-                                                                className="size-5 rounded border-gray-300"
-                                                            />
-
-                                                            <span className="text-sm font-medium text-gray-700">
-                                                                {" "}
-                                                                Green{" "}
-                                                            </span>
-                                                        </label>
-                                                    </li>
-
-                                                    <li>
-                                                        <label
-                                                            htmlFor="FilterOrange"
-                                                            className="inline-flex items-center gap-2"
+                                                            <svg
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                fill="none"
+                                                                viewBox="0 0 24 24"
+                                                                strokeWidth="1.5"
+                                                                stroke="currentColor"
+                                                                className="w-6 h-6 bg-green-600 text-white rounded-full"
+                                                            >
+                                                                <path
+                                                                    strokeLinecap="round"
+                                                                    strokeLinejoin="round"
+                                                                    d="m15.75 15.75-2.489-2.489m0 0a3.375 3.375 0 1 0-4.773-4.773 3.375 3.375 0 0 0 4.774 4.774ZM21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                                                />
+                                                            </svg>
+                                                        </button>
+                                                        <button
+                                                            className="m-auto px-1"
+                                                            type="button"
+                                                            onClick={() => {
+                                                                setFilterTanggalDari(
+                                                                    ""
+                                                                );
+                                                                setFilterTanggalKe(
+                                                                    ""
+                                                                );
+                                                                setReloadTable(
+                                                                    true
+                                                                );
+                                                            }}
                                                         >
-                                                            <input
-                                                                type="checkbox"
-                                                                id="FilterOrange"
-                                                                className="size-5 rounded border-gray-300"
-                                                            />
-
-                                                            <span className="text-sm font-medium text-gray-700">
-                                                                {" "}
-                                                                Orange{" "}
-                                                            </span>
-                                                        </label>
-                                                    </li>
-
-                                                    <li>
-                                                        <label
-                                                            htmlFor="FilterPurple"
-                                                            className="inline-flex items-center gap-2"
-                                                        >
-                                                            <input
-                                                                type="checkbox"
-                                                                id="FilterPurple"
-                                                                className="size-5 rounded border-gray-300"
-                                                            />
-
-                                                            <span className="text-sm font-medium text-gray-700">
-                                                                {" "}
-                                                                Purple{" "}
-                                                            </span>
-                                                        </label>
-                                                    </li>
-
-                                                    <li>
-                                                        <label
-                                                            htmlFor="FilterTeal"
-                                                            className="inline-flex items-center gap-2"
-                                                        >
-                                                            <input
-                                                                type="checkbox"
-                                                                id="FilterTeal"
-                                                                className="size-5 rounded border-gray-300"
-                                                            />
-
-                                                            <span className="text-sm font-medium text-gray-700">
-                                                                {" "}
-                                                                Teal{" "}
-                                                            </span>
-                                                        </label>
-                                                    </li>
-                                                </ul>
+                                                            <svg
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                fill="none"
+                                                                viewBox="0 0 24 24"
+                                                                strokeWidth="1.5"
+                                                                stroke="currentColor"
+                                                                className="w-6 h-6 bg-red-600 text-white rounded-full"
+                                                            >
+                                                                <path
+                                                                    strokeLinecap="round"
+                                                                    strokeLinejoin="round"
+                                                                    d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                                                />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </details>
                                     </div>

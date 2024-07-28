@@ -12,6 +12,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
+import Select from "react-select";
 
 export const HasilPertanyaan = () => {
     let navigate = useNavigate();
@@ -31,6 +32,24 @@ export const HasilPertanyaan = () => {
     const [search, setSearch] = useState("");
     const [filterTanggalDari, setFilterTanggalDari] = useState("");
     const [filterTanggalKe, setFilterTanggalKe] = useState("");
+
+    const [filterTahunLulus, setFilterTahunLulus] = useState({
+        value: "",
+        label: "Lulusan",
+    });
+
+    const [pilihanTahun, setPilihanTahun] = useState([]);
+
+    useEffect(() => {
+        const createYear = (start, stop, step) =>
+            Array.from(
+                { length: (stop - start) / step + 1 },
+                (_, i) => start + i * step
+            );
+        createYear(new Date().getFullYear(), 1901, -1).map((year) => {
+            setPilihanTahun((prev) => [...prev, { label: year, value: year }]);
+        });
+    }, []);
 
     const [paginate, setPaginate] = useState(10);
     const [allData, setAllData] = useState({
@@ -74,7 +93,9 @@ export const HasilPertanyaan = () => {
             .get(
                 `${
                     import.meta.env.VITE_ALL_BASE_URL
-                }/pertanyaan/hasil?page=${page}&q=${search}&paginate=${paginate}&fakultas=${fakultas}&prodi=${prodi}&daritanggal=${filterTanggalDari}&ketanggal=${filterTanggalKe}`,
+                }/hasil/hasil?page=${page}&q=${search}&paginate=${paginate}&fakultas=${fakultas}&prodi=${prodi}&daritanggal=${filterTanggalDari}&ketanggal=${filterTanggalKe}&tahun_lulus=${
+                    filterTahunLulus.value
+                }`,
                 {
                     headers: {
                         Authorization: "Bearer " + Cookies.get("token"),
@@ -128,14 +149,11 @@ export const HasilPertanyaan = () => {
         setLoader(true);
         setReloadTable(false);
         axios
-            .get(
-                `${import.meta.env.VITE_ALL_BASE_URL}/pengguna/alumni/create`,
-                {
-                    headers: {
-                        Authorization: "Bearer " + Cookies.get("token"),
-                    },
-                }
-            )
+            .get(`${import.meta.env.VITE_ALL_BASE_URL}/hasil/hasil/create`, {
+                headers: {
+                    Authorization: "Bearer " + Cookies.get("token"),
+                },
+            })
             .then((res) => {
                 setFakultasAlumni([...res.data.fakultas]);
                 setProdiAll([...res.data.prodi]);
@@ -189,7 +207,7 @@ export const HasilPertanyaan = () => {
                     .delete(
                         `${
                             import.meta.env.VITE_ALL_BASE_URL
-                        }/hasil/delete/delete/${id}`,
+                        }/hasil/hasil/delete/${id}`,
                         {
                             headers: {
                                 Authorization: "Bearer " + Cookies.get("token"),
@@ -232,13 +250,14 @@ export const HasilPertanyaan = () => {
                                 "Program Studi",
                                 "Nama",
                                 "NIM",
+                                "Lulusan",
                                 "Aksi",
                             ]}
                             label={"Data Hasil Kuisioner"}
                             filter={
                                 <>
                                     <div className="flex me-4">
-                                        <p className="m-auto mx-1 text-sm font-semibold">
+                                        <p className="m-auto mx-1 text-xs font-semibold">
                                             Dari
                                         </p>
                                         <div className="relative">
@@ -251,11 +270,11 @@ export const HasilPertanyaan = () => {
                                                         e.target.value
                                                     )
                                                 }
-                                                className="h-full border block appearance-none w-full bg-white border-gray-300 text-black py-2 px-2 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                                className="h-full border block appearance-none w-fit bg-white border-gray-300 text-black py-2 px-2 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                                 placeholder="Tanggal.."
                                             />
                                         </div>
-                                        <p className="m-auto mx-1 text-sm font-semibold">
+                                        <p className="m-auto mx-1 text-xs font-semibold">
                                             Ke
                                         </p>
                                         <div className="relative">
@@ -268,7 +287,7 @@ export const HasilPertanyaan = () => {
                                                         e.target.value
                                                     )
                                                 }
-                                                className="h-full border block appearance-none w-full bg-white border-gray-300 text-black py-2 px-2 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                                className="h-full border block appearance-none w-fit bg-white border-gray-300 text-black py-2 px-2 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                                 placeholder="Tanggal.."
                                             />
                                         </div>
@@ -325,7 +344,7 @@ export const HasilPertanyaan = () => {
                                             onChange={(e) =>
                                                 setFakultas(e.target.value)
                                             }
-                                            className="h-full border block appearance-none w-full bg-white border-gray-300 text-gray-700 py-2 px-2 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                            className="h-full border block appearance-none w-20 bg-white border-gray-300 text-gray-700 py-2 px-2 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                         >
                                             <option value="">Fakultas</option>
                                             {fakultasAlumni.map((kat, x) => {
@@ -355,7 +374,7 @@ export const HasilPertanyaan = () => {
                                             onChange={(e) =>
                                                 setProdi(e.target.value)
                                             }
-                                            className="h-full border block appearance-none w-full bg-white border-gray-300 text-gray-700 py-2 px-2 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                            className="h-full border block appearance-none w-fit bg-white border-gray-300 text-gray-700 py-2 px-2 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                         >
                                             <option value="">Prodi</option>
                                             {prodiAlumni.map((kat, x) => {
@@ -379,6 +398,17 @@ export const HasilPertanyaan = () => {
                                             </svg>
                                         </div>
                                     </div>
+                                    <div className="relative">
+                                        <Select
+                                            id="tahun_lulus"
+                                            onChange={(value) =>
+                                                setFilterTahunLulus(value)
+                                            }
+                                            required
+                                            value={filterTahunLulus}
+                                            options={pilihanTahun}
+                                        />
+                                    </div>
                                 </>
                             }
                             pagination={paginate}
@@ -399,7 +429,7 @@ export const HasilPertanyaan = () => {
                                             >
                                                 <th
                                                     scope="row"
-                                                    className="px-6 py-4 font-semibold text-gray-900 whitespace-nowrap"
+                                                    className="py-4 text-center font-semibold text-gray-900 whitespace-nowrap"
                                                 >
                                                     {i + allData.from}
                                                 </th>
@@ -428,6 +458,12 @@ export const HasilPertanyaan = () => {
                                                     {all.data_alumni.nim}
                                                 </td>
                                                 <td className="px-6 py-4 text-black">
+                                                    {
+                                                        all.data_alumni
+                                                            .tahun_lulus
+                                                    }
+                                                </td>
+                                                <td className="py-4 text-black">
                                                     <div className="inline-flex justify-center">
                                                         <Link
                                                             type="button"
@@ -467,7 +503,7 @@ export const HasilPertanyaan = () => {
                                 ) : (
                                     <tr className="bg-white border-b">
                                         <td
-                                            colSpan={7}
+                                            colSpan={8}
                                             className="text-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                                         >
                                             <div className="flex w-full justify-center">
@@ -479,7 +515,7 @@ export const HasilPertanyaan = () => {
                             ) : (
                                 <tr className="bg-white border-b">
                                     <td
-                                        colSpan={7}
+                                        colSpan={8}
                                         className="text-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                                     >
                                         {loader == true ? (

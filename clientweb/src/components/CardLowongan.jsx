@@ -6,7 +6,7 @@ export const CardLowongan = ({ data }) => {
         <>
             <Link
                 className="block rounded-xl border border-teal-300 p-8 shadow-xl transition hover:border-teal-500/10 hover:shadow-teal-500/10"
-                href="#"
+                to={`/lowongan/detail/${data.id}`}
             >
                 <img
                     className="h-10 w-10"

@@ -566,7 +566,7 @@ export const Dosen = () => {
                                             >
                                                 <th
                                                     scope="row"
-                                                    className="px-6 py-4 font-semibold text-gray-900 whitespace-nowrap"
+                                                    className="py-4 text-center font-semibold text-gray-900 whitespace-nowrap"
                                                 >
                                                     {i + allData.from}
                                                 </th>

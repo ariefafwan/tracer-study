@@ -6,6 +6,8 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BiodataController;
 use App\Http\Controllers\Api\ClientWebsiteController;
 use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\Hasil\HasilController;
+use App\Http\Controllers\Api\Hasil\StatistikController;
 use App\Http\Controllers\Api\Konten\FAQController;
 use App\Http\Controllers\Api\Konten\KontenWebsiteController;
 use App\Http\Controllers\Api\Konten\LowonganController;
@@ -14,7 +16,6 @@ use App\Http\Controllers\Api\Master\DosenController;
 use App\Http\Controllers\Api\Master\FakultasController;
 use App\Http\Controllers\Api\Master\KategoriPertanyaanController;
 use App\Http\Controllers\Api\Master\ProgramStudiController;
-use App\Http\Controllers\Api\Pertanyaan\HasilKuisionerController;
 use App\Http\Controllers\Api\Pertanyaan\PertanyaanController;
 
 /*
@@ -44,15 +45,17 @@ Route::group(['prefix' => 'client'], function () {
     Route::get('/checkAlumni', [ClientWebsiteController::class, 'checkAlumni']);
     Route::get('/programstudi', [ClientWebsiteController::class, 'programstudi']);
     Route::post('/kuisioner', [ClientWebsiteController::class, 'kuisioner']);
-});
-
-Route::group(['prefix' => 'dashboard'], function () {
-    Route::get('/dashboard', [DashboardController::class, 'dashboard']);
-    Route::get('/grafik_kuisioner', [DashboardController::class, 'grafik_kuisioner']);
-    Route::get('/grafik_prodi_kuisioner', [DashboardController::class, 'grafik_prodi_kuisioner']);
+    Route::get('/detail_lowongan/{id}', [ClientWebsiteController::class, 'detail_lowongan']);
 });
 
 Route::middleware(('jwt'))->group(function () {
+
+    Route::group(['prefix' => 'dashboard'], function () {
+        Route::get('/dashboard', [DashboardController::class, 'dashboard']);
+        Route::get('/grafik_kuisioner', [DashboardController::class, 'grafik_kuisioner']);
+        Route::get('/grafik_prodi_kuisioner', [DashboardController::class, 'grafik_prodi_kuisioner']);
+    });
+
     Route::group(['prefix' => 'pengguna'], function () {
         Route::group(['prefix' => 'alumni'], function () {
             Route::get('/', [AlumniController::class, 'index']);
@@ -112,11 +115,20 @@ Route::middleware(('jwt'))->group(function () {
             Route::post('/update', [PertanyaanController::class, 'update']);
             Route::delete('/delete/{id}', [PertanyaanController::class, 'delete']);
         });
+    });
 
+    Route::group(['prefix' => 'hasil'], function () {
         Route::group(['prefix' => 'hasil'], function () {
-            Route::get('/', [HasilKuisionerController::class, 'index']);
-            Route::get('/show_hasil/{id}', [HasilKuisionerController::class, 'show_hasil']);
-            Route::delete('/delete/{id}', [HasilKuisionerController::class, 'delete']);
+            Route::get('/', [HasilController::class, 'index']);
+            Route::get('/create', [HasilController::class, 'create']);
+            Route::get('/show_hasil/{id}', [HasilController::class, 'show_hasil']);
+            Route::delete('/delete/{id}', [HasilController::class, 'delete']);
+        });
+
+        Route::group(['prefix' => 'statistik'], function () {
+            Route::get('/', [StatistikController::class, 'index']);
+            Route::get('/statistik-per-kategori/{id_kategori}/{tahun_lulus}', [StatistikController::class, 'statistik_perkategori']);
+            Route::get('/statistik-per-pertanyaan/{id_pertanyaan}/{tahun_lulus}', [StatistikController::class, 'statistik_perpertanyaan']);
         });
     });
 

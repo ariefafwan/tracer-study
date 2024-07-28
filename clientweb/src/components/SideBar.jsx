@@ -3,7 +3,7 @@ import { Link, useLocation, useParams } from "react-router-dom";
 
 export const SideBar = () => {
     const location = useLocation();
-    const { slug, id } = useParams();
+    const { slug, id, tahun_lulus } = useParams();
     const [menuPertanyaan, setMenuPertanyaan] = useState(false);
     const [menuPengguna, setMenuPengguna] = useState(false);
     const [menuKonten, setMenuKonten] = useState(false);
@@ -44,7 +44,11 @@ export const SideBar = () => {
         } else if (
             location.pathname == "/hasil/hasil-kuisioner" ||
             location.pathname == `/hasil/hasil-kuisioner/${id}` ||
-            location.pathname == "/hasil/statistik"
+            location.pathname == "/hasil/statistik" ||
+            location.pathname ==
+                `/hasil/statistik/per-kategori/${id}/${tahun_lulus}` ||
+            location.pathname ==
+                `/hasil/statistik/per-pertanyaan/${id}/${tahun_lulus}`
         ) {
             setMenuHasil((menuHasil) => !menuHasil);
         }
@@ -433,7 +437,11 @@ export const SideBar = () => {
                                         to={"/hasil/statistik"}
                                         className={
                                             (location.pathname ==
-                                            "/hasil/statistik"
+                                                "/hasil/statistik" ||
+                                            location.pathname ==
+                                                `/hasil/statistik/per-kategori/${id}/${tahun_lulus}` ||
+                                            location.pathname ==
+                                                `/hasil/statistik/per-pertanyaan/${id}/${tahun_lulus}`
                                                 ? "bg-teal-500"
                                                 : "") +
                                             " flex items-center text-sm w-full p-2 text-black transition duration-75 rounded-lg pl-11 group hover:bg-teal-500"

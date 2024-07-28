@@ -12,7 +12,6 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
-// import { Navigate } from "react-router-dom";
 
 export const MasterLowongan = () => {
     let navigate = useNavigate();
@@ -189,7 +188,7 @@ export const MasterLowongan = () => {
                                             >
                                                 <th
                                                     scope="row"
-                                                    className="px-6 py-4 font-semibold text-gray-900 whitespace-nowrap"
+                                                    className="py-4 text-center font-semibold text-gray-900 whitespace-nowrap"
                                                 >
                                                     {i + allData.from}
                                                 </th>

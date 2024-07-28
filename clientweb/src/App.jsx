@@ -15,9 +15,8 @@ import { Dashboard } from "./pages/dashboard/Dashboard";
 import { MasterFAQ } from "./pages/dashboard/konten/MasterFAQ";
 import { MasterKonten } from "./pages/dashboard/konten/MasterKonten";
 import { MasterLowongan } from "./pages/dashboard/konten/MasterLowongan/MasterLowongan";
-import { Pertanyaan } from "./pages/dashboard/pertanyaan/Pertanyaan";
 import { KategoriPertanyaan } from "./pages/dashboard/pertanyaan/KategoriPertanyaan";
-import { Statistik } from "./pages/dashboard/hasil/Statistik";
+// import { Statistik } from "./pages/dashboard/hasil/Statistik";
 import { Profile } from "./pages/dashboard/Profile";
 import { MainProvider } from "./Context/MainContext";
 import { EditLowongan } from "./pages/dashboard/konten/MasterLowongan/EditLowongan";
@@ -27,6 +26,11 @@ import { EditPertanyaan } from "./pages/dashboard/pertanyaan/Pertanyaan/EditPert
 import { Kuisioner } from "./pages/client/Kuisioner";
 import { HasilPertanyaan } from "./pages/dashboard/hasil/HasilPertanyaan";
 import { ShowHasilKuisioner } from "./pages/dashboard/hasil/ShowHasilKuisioner";
+import { MasterPertanyaan } from "./pages/dashboard/pertanyaan/Pertanyaan/MasterPertanyaan";
+import { MasterStatistik } from "./pages/dashboard/hasil/Statistik/MasterStatistik";
+import { StatistikPerKategori } from "./pages/dashboard/hasil/Statistik/StatistikPerKategori";
+import { StatistikPerPertanyaan } from "./pages/dashboard/hasil/Statistik/StatistikPerPertanyaan";
+import { DetailLowongan } from "./pages/client/DetailLowongan";
 
 const ErrorPage = () => {
     return (
@@ -52,6 +56,10 @@ function App() {
                         <Route
                             path="/kuisioner"
                             element={<Kuisioner></Kuisioner>}
+                        ></Route>
+                        <Route
+                            path="/lowongan/detail/:id"
+                            element={<DetailLowongan></DetailLowongan>}
                         ></Route>
                         <Route
                             path="/login"
@@ -161,7 +169,7 @@ function App() {
                             path="/pertanyaan/pertanyaan"
                             element={
                                 <Authenticated>
-                                    <Pertanyaan></Pertanyaan>
+                                    <MasterPertanyaan></MasterPertanyaan>
                                 </Authenticated>
                             }
                         ></Route>
@@ -201,7 +209,23 @@ function App() {
                             path="/hasil/statistik"
                             element={
                                 <Authenticated>
-                                    <Statistik></Statistik>
+                                    <MasterStatistik></MasterStatistik>
+                                </Authenticated>
+                            }
+                        ></Route>
+                        <Route
+                            path="/hasil/statistik/per-kategori/:id/:tahun_lulus"
+                            element={
+                                <Authenticated>
+                                    <StatistikPerKategori></StatistikPerKategori>
+                                </Authenticated>
+                            }
+                        ></Route>
+                        <Route
+                            path="/hasil/statistik/per-pertanyaan/:id/:tahun_lulus"
+                            element={
+                                <Authenticated>
+                                    <StatistikPerPertanyaan></StatistikPerPertanyaan>
                                 </Authenticated>
                             }
                         ></Route>

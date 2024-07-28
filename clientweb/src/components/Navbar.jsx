@@ -87,20 +87,6 @@ export const Navbar = () => {
                                         </Link>
                                     </li>
                                     <li>
-                                        <a
-                                            className={
-                                                (location.pathname ==
-                                                "/statistik"
-                                                    ? "text-teal-600 hover:text-teal-400 font-semibold"
-                                                    : "text-gray-500 hover:text-gray-500/75") +
-                                                " transition"
-                                            }
-                                            href="#"
-                                        >
-                                            Statistik
-                                        </a>
-                                    </li>
-                                    <li>
                                         <Link
                                             className={
                                                 (location.pathname == "/faq"
@@ -207,18 +193,6 @@ export const Navbar = () => {
                                 }
                             >
                                 Lowongan
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                className={
-                                    (location.pathname == "/statistik"
-                                        ? "bg-teal-600 text-white hover:bg-teal-500"
-                                        : "text-black hover:text-teal-700") +
-                                    " block rounded py-2 pl-3 pr-4 lg:bg-transparent lg:p-0"
-                                }
-                            >
-                                Statistik
                             </Link>
                         </li>
                         <li>

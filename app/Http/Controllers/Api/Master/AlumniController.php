@@ -18,6 +18,7 @@ class AlumniController extends Controller
         $search_value = request('q', '');
         $status = request('status', '');
         $prodi = request('prodi', '');
+        $tahun_lulus = request('tahun_lulus', '');
         $fakultas = request('fakultas', '');
         $alumni = MasterAlumni::with('dataProdi.dataFakultas')
             ->when($status, function ($query) use ($status) {
@@ -31,6 +32,9 @@ class AlumniController extends Controller
             ->when($prodi, function ($query) use ($prodi) {
                 $query->where('id_program_studi', $prodi);
             })
+            ->when($tahun_lulus, function ($query) use ($tahun_lulus) {
+                $query->where('tahun_lulus', $tahun_lulus);
+            })
             ->orderBy('id_program_studi', 'asc')
             ->orderBy('nim', 'asc')
             ->search(trim($search_value))
@@ -40,8 +44,8 @@ class AlumniController extends Controller
 
     public function create()
     {
-        $fakultas = MasterFakultas::get();
-        $prodi = MasterProgramStudi::get();
+        $fakultas = MasterFakultas::select('id as value', 'nama as label')->orderBy('label')->get();
+        $prodi = MasterProgramStudi::select('id as value', 'nama as label', 'id_fakultas')->orderBy('label')->get();
         return response()->json(compact('fakultas', 'prodi'), 200);
     }
 
@@ -49,11 +53,12 @@ class AlumniController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'nama' => 'required',
-            'id_program_studi' => 'required',
+            'id_program_studi.value' => 'required',
             'jenis_kelamin' => 'required',
             'nim' => 'required',
             'nik' => 'required',
-            'status' => 'required'
+            'status' => 'required',
+            'tahun_lulus.value' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -72,12 +77,13 @@ class AlumniController extends Controller
 
             $new = new MasterAlumni();
             $new->nama = $request->nama;
-            $new->id_program_studi = $request->id_program_studi;
+            $new->id_program_studi = $request->id_program_studi['value'];
             $new->jenis_kelamin = $request->jenis_kelamin;
             $new->nim = $request->nim;
             $new->nik = $request->nik;
             $new->npwp = $request->npwp;
             $new->status = $request->status;
+            $new->tahun_lulus = $request->tahun_lulus['value'];
             $new->save();
 
             DB::commit();
@@ -90,7 +96,7 @@ class AlumniController extends Controller
 
     public function edit($id)
     {
-        $data = MasterAlumni::with('dataProdi')->findOrFail($id);
+        $data = MasterAlumni::with('dataProdi.dataFakultas')->findOrFail($id);
         return response(json_encode($data), 200);
     }
 
@@ -98,11 +104,12 @@ class AlumniController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'nama' => 'required',
-            'id_program_studi' => 'required',
+            'id_program_studi.value' => 'required',
             'jenis_kelamin' => 'required',
             'nim' => 'required',
             'nik' => 'required',
-            'status' => 'required'
+            'status' => 'required',
+            'tahun_lulus.value' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -123,12 +130,13 @@ class AlumniController extends Controller
             $data = MasterAlumni::findOrFail($request->id);
 
             $data->nama = $request->nama;
-            $data->id_program_studi = $request->id_program_studi;
+            $data->id_program_studi = $request->id_program_studi['value'];
             $data->jenis_kelamin = $request->jenis_kelamin;
             $data->nim = $request->nim;
             $data->nik = $request->nik;
             $data->npwp = $request->npwp;
             $data->status = $request->status;
+            $data->tahun_lulus = $request->tahun_lulus['value'];
             $data->save();
 
             DB::commit();
