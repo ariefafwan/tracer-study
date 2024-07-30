@@ -20,6 +20,7 @@ export const DashboardLayout = ({ children }) => {
     const [profile, setProfile] = useState({
         email: "",
         nama: "",
+        logo: "",
     });
 
     useEffect(() => {
@@ -28,6 +29,7 @@ export const DashboardLayout = ({ children }) => {
             setProfile({
                 email: profile.email,
                 nama: profile.nama,
+                logo: profile.logo,
             });
         }
     }, []);
@@ -103,7 +105,18 @@ export const DashboardLayout = ({ children }) => {
                                         <img
                                             id="dropdown-navigater-button"
                                             className="w-8 h-8 rounded-full"
-                                            src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                                            src={
+                                                profile.logo != undefined &&
+                                                profile.logo != "" &&
+                                                profile.logo != null
+                                                    ? `${
+                                                          import.meta.env
+                                                              .VITE_AUTH_MAIN_BASE_URL
+                                                      }/storage/Profile/Logo/${
+                                                          profile.logo
+                                                      }`
+                                                    : "/profil_img.jpg"
+                                            }
                                             alt="user photo"
                                         />
                                     </button>

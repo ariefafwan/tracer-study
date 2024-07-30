@@ -20,7 +20,7 @@ export const MainProvider = (props) => {
                         Cookies.set("profile", JSON.stringify(res.data), {
                             expires: 1,
                         });
-                        setDataProfile([...res.data]);
+                        setDataProfile([res.data]);
                         setFetchProfile(false);
                     } else {
                         if (JSON.parse(Cookies.get("profile")) !== res.data) {
