@@ -439,9 +439,9 @@ export const StatistikPerPertanyaan = () => {
                             };
                         }
                     } else if (
-                        res.data.pertanyaan.tipe == "Input_Text" ||
-                        res.data.pertanyaan.tipe == "Input_Angka" ||
-                        res.data.pertanyaan.tipe == "Input_Tanggal"
+                        res.data.pertanyaan.tipe == "Inputan_Text" ||
+                        res.data.pertanyaan.tipe == "Inputan_Angka" ||
+                        res.data.pertanyaan.tipe == "Inputan_Tanggal"
                     ) {
                         let dataJawaban = res.data.data.filter(
                             (e) => e.id_pertanyaan == res.data.pertanyaan.id
@@ -454,16 +454,16 @@ export const StatistikPerPertanyaan = () => {
                             dataJawaban.forEach((val) => {
                                 if (
                                     counter[
-                                        val.data_master_pilihan_jawaban[0]
+                                        val.data_hasil_jawaban_pilihan[0]
                                             .jawaban_input
                                     ]
                                 ) {
                                     counter[
-                                        val.data_master_pilihan_jawaban[0].jawaban_input
+                                        val.data_hasil_jawaban_pilihan[0].jawaban_input
                                     ] += 1;
                                 } else {
                                     counter[
-                                        val.data_master_pilihan_jawaban[0].jawaban_input
+                                        val.data_hasil_jawaban_pilihan[0].jawaban_input
                                     ] = 1;
                                 }
                             });
@@ -1890,9 +1890,9 @@ export const StatistikPerPertanyaan = () => {
                                 };
                             }
                         } else if (
-                            res.data.pertanyaan.tipe == "Input_Text" ||
-                            res.data.pertanyaan.tipe == "Input_Angka" ||
-                            res.data.pertanyaan.tipe == "Input_Tanggal"
+                            res.data.pertanyaan.tipe == "Inputan_Text" ||
+                            res.data.pertanyaan.tipe == "Inputan_Angka" ||
+                            res.data.pertanyaan.tipe == "Inputan_Tanggal"
                         ) {
                             let dataJawaban = res.data.data.filter(
                                 (e) => e.id_pertanyaan == res.data.pertanyaan.id
@@ -1905,16 +1905,16 @@ export const StatistikPerPertanyaan = () => {
                                 dataJawaban.forEach((val) => {
                                     if (
                                         counter[
-                                            val.data_master_pilihan_jawaban[0]
+                                            val.data_hasil_jawaban_pilihan[0]
                                                 .jawaban_input
                                         ]
                                     ) {
                                         counter[
-                                            val.data_master_pilihan_jawaban[0].jawaban_input
+                                            val.data_hasil_jawaban_pilihan[0].jawaban_input
                                         ] += 1;
                                     } else {
                                         counter[
-                                            val.data_master_pilihan_jawaban[0].jawaban_input
+                                            val.data_hasil_jawaban_pilihan[0].jawaban_input
                                         ] = 1;
                                     }
                                 });
@@ -2753,11 +2753,11 @@ export const StatistikPerPertanyaan = () => {
                                     } else if (
                                         (dataPieChartJawaban.isTampil &&
                                             dataPieChartJawaban.tipe ==
-                                                "Input_Text") ||
+                                                "Inputan_Text") ||
                                         dataPieChartJawaban.tipe ==
-                                            "Input_Angka" ||
+                                            "Inputan_Angka" ||
                                         dataPieChartJawaban.tipe ==
-                                            "Input_Tanggal"
+                                            "Inputan_Tanggal"
                                     ) {
                                         return (
                                             <div key={biar} className="mb-4">

@@ -157,17 +157,17 @@ class ClientWebsiteController extends Controller
                         $jawaban->id_pilihan_jawaban = $value['pilihan_jawaban']['value'];
                     }
                     $jawaban->save();
-                } else if ($value['tipe'] == 'Input_Text') {
+                } else if ($value['tipe'] == 'Inputan_Text') {
                     $jawaban = new HasilJawabanPilihan();
                     $jawaban->id_hasil_jawaban = $new->id;
                     $jawaban->jawaban_input = $value['jawaban_input'];
                     $jawaban->save();
-                } else if ($value['tipe'] == 'Input_Angka') {
+                } else if ($value['tipe'] == 'Inputan_Angka') {
                     $jawaban = new HasilJawabanPilihan();
                     $jawaban->id_hasil_jawaban = $new->id;
                     $jawaban->jawaban_input = $value['jawaban_input'];
                     $jawaban->save();
-                } else if ($value['tipe'] == 'Input_Tanggal') {
+                } else if ($value['tipe'] == 'Inputan_Tanggal') {
                     $jawaban = new HasilJawabanPilihan();
                     $jawaban->id_hasil_jawaban = $new->id;
                     $jawaban->jawaban_input = $value['jawaban_input'];
@@ -233,17 +233,17 @@ class ClientWebsiteController extends Controller
                             $jawaban->id_pilihan_jawaban = $value2['pilihan_jawaban']['value'];
                         }
                         $jawaban->save();
-                    } else if ($value2['jenis_subpertanyaan'] == 'Input_Text') {
+                    } else if ($value2['jenis_subpertanyaan'] == 'Inputan_Text') {
                         $jawaban = new HasilJawabanPilihan();
                         $jawaban->id_hasil_jawaban = $new->id;
                         $jawaban->jawaban_input = $value2['jawaban_input'];
                         $jawaban->save();
-                    } else if ($value2['jenis_subpertanyaan'] == 'Input_Angka') {
+                    } else if ($value2['jenis_subpertanyaan'] == 'Inputan_Angka') {
                         $jawaban = new HasilJawabanPilihan();
                         $jawaban->id_hasil_jawaban = $new->id;
                         $jawaban->jawaban_input = $value2['jawaban_input'];
                         $jawaban->save();
-                    } else if ($value2['jenis_subpertanyaan'] == 'Input_Tanggal') {
+                    } else if ($value2['jenis_subpertanyaan'] == 'Inputan_Tanggal') {
                         $jawaban = new HasilJawabanPilihan();
                         $jawaban->id_hasil_jawaban = $new->id;
                         $jawaban->jawaban_input = $value2['jawaban_input'];

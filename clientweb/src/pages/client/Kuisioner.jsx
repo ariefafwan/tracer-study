@@ -818,7 +818,9 @@ export const Kuisioner = () => {
                                                 Kuisioner Wajib
                                             </h6>
                                             {formKuisioner.map((data, i) => {
-                                                if (data.tipe == "Input_Text") {
+                                                if (
+                                                    data.tipe == "Inputan_Text"
+                                                ) {
                                                     return (
                                                         <div
                                                             key={i}
@@ -877,7 +879,7 @@ export const Kuisioner = () => {
                                                         </div>
                                                     );
                                                 } else if (
-                                                    data.tipe == "Input_Angka"
+                                                    data.tipe == "Inputan_Angka"
                                                 ) {
                                                     return (
                                                         <div
@@ -937,7 +939,8 @@ export const Kuisioner = () => {
                                                         </div>
                                                     );
                                                 } else if (
-                                                    data.tipe == "Input_Tanggal"
+                                                    data.tipe ==
+                                                    "Inputan_Tanggal"
                                                 ) {
                                                     return (
                                                         <div
@@ -2162,7 +2165,7 @@ export const Kuisioner = () => {
                                                     if (
                                                         data.isTampil &&
                                                         data.jenis_subpertanyaan ==
-                                                            "Input_Text"
+                                                            "Inputan_Text"
                                                     ) {
                                                         return (
                                                             <div
@@ -2224,7 +2227,7 @@ export const Kuisioner = () => {
                                                     } else if (
                                                         data.isTampil &&
                                                         data.jenis_subpertanyaan ==
-                                                            "Input_Angka"
+                                                            "Inputan_Angka"
                                                     ) {
                                                         return (
                                                             <div
@@ -2286,7 +2289,7 @@ export const Kuisioner = () => {
                                                     } else if (
                                                         data.isTampil &&
                                                         data.jenis_subpertanyaan ==
-                                                            "Input_Tanggal"
+                                                            "Inputan_Tanggal"
                                                     ) {
                                                         return (
                                                             <div

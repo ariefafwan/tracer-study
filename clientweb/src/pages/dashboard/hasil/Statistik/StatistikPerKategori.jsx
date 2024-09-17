@@ -446,9 +446,9 @@ export const StatistikPerKategori = () => {
                                 };
                             }
                         } else if (
-                            pertanyaan.tipe == "Input_Text" ||
-                            pertanyaan.tipe == "Input_Angka" ||
-                            pertanyaan.tipe == "Input_Tanggal"
+                            pertanyaan.tipe == "Inputan_Text" ||
+                            pertanyaan.tipe == "Inputan_Angka" ||
+                            pertanyaan.tipe == "Inputan_Tanggal"
                         ) {
                             let dataJawaban = res.data.data.filter(
                                 (e) => e.id_pertanyaan == pertanyaan.id
@@ -461,16 +461,16 @@ export const StatistikPerKategori = () => {
                                 dataJawaban.forEach((val) => {
                                     if (
                                         counter[
-                                            val.data_master_pilihan_jawaban[0]
+                                            val.data_hasil_jawaban_pilihan[0]
                                                 .jawaban_input
                                         ]
                                     ) {
                                         counter[
-                                            val.data_master_pilihan_jawaban[0].jawaban_input
+                                            val.data_hasil_jawaban_pilihan[0].jawaban_input
                                         ] += 1;
                                     } else {
                                         counter[
-                                            val.data_master_pilihan_jawaban[0].jawaban_input
+                                            val.data_hasil_jawaban_pilihan[0].jawaban_input
                                         ] = 1;
                                     }
                                 });
@@ -1911,9 +1911,9 @@ export const StatistikPerKategori = () => {
                                     };
                                 }
                             } else if (
-                                pertanyaan.tipe == "Input_Text" ||
-                                pertanyaan.tipe == "Input_Angka" ||
-                                pertanyaan.tipe == "Input_Tanggal"
+                                pertanyaan.tipe == "Inputan_Text" ||
+                                pertanyaan.tipe == "Inputan_Angka" ||
+                                pertanyaan.tipe == "Inputan_Tanggal"
                             ) {
                                 let dataJawaban = res.data.data.filter(
                                     (e) => e.id_pertanyaan == pertanyaan.id
@@ -1927,16 +1927,16 @@ export const StatistikPerKategori = () => {
                                         if (
                                             counter[
                                                 val
-                                                    .data_master_pilihan_jawaban[0]
+                                                    .data_hasil_jawaban_pilihan[0]
                                                     .jawaban_input
                                             ]
                                         ) {
                                             counter[
-                                                val.data_master_pilihan_jawaban[0].jawaban_input
+                                                val.data_hasil_jawaban_pilihan[0].jawaban_input
                                             ] += 1;
                                         } else {
                                             counter[
-                                                val.data_master_pilihan_jawaban[0].jawaban_input
+                                                val.data_hasil_jawaban_pilihan[0].jawaban_input
                                             ] = 1;
                                         }
                                     });
@@ -2364,9 +2364,9 @@ export const StatistikPerKategori = () => {
                                     );
                                 } else if (
                                     (data.isTampil &&
-                                        data.tipe == "Input_Text") ||
-                                    data.tipe == "Input_Angka" ||
-                                    data.tipe == "Input_Tanggal"
+                                        data.tipe == "Inputan_Text") ||
+                                    data.tipe == "Inputan_Angka" ||
+                                    data.tipe == "Inputan_Tanggal"
                                 ) {
                                     return (
                                         <div key={index} className="mb-4">

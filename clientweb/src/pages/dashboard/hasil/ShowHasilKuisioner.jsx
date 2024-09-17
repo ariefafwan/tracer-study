@@ -698,7 +698,7 @@ export const ShowHasilKuisioner = () => {
                                             Kuisioner Wajib
                                         </h6>
                                         {formKuisioner.map((data, i) => {
-                                            if (data.tipe == "Input_Text") {
+                                            if (data.tipe == "Inputan_Text") {
                                                 return (
                                                     <div
                                                         key={i}
@@ -730,7 +730,7 @@ export const ShowHasilKuisioner = () => {
                                                     </div>
                                                 );
                                             } else if (
-                                                data.tipe == "Input_Angka"
+                                                data.tipe == "Inputan_Angka"
                                             ) {
                                                 return (
                                                     <div
@@ -763,7 +763,7 @@ export const ShowHasilKuisioner = () => {
                                                     </div>
                                                 );
                                             } else if (
-                                                data.tipe == "Input_Tanggal"
+                                                data.tipe == "Inputan_Tanggal"
                                             ) {
                                                 return (
                                                     <div
@@ -1422,7 +1422,7 @@ export const ShowHasilKuisioner = () => {
                                                       if (
                                                           data.isTampil &&
                                                           data.jenis_subpertanyaan ==
-                                                              "Input_Text"
+                                                              "Inputan_Text"
                                                       ) {
                                                           return (
                                                               <div
@@ -1459,7 +1459,7 @@ export const ShowHasilKuisioner = () => {
                                                       } else if (
                                                           data.isTampil &&
                                                           data.jenis_subpertanyaan ==
-                                                              "Input_Angka"
+                                                              "Inputan_Angka"
                                                       ) {
                                                           return (
                                                               <div
@@ -1496,7 +1496,7 @@ export const ShowHasilKuisioner = () => {
                                                       } else if (
                                                           data.isTampil &&
                                                           data.jenis_subpertanyaan ==
-                                                              "Input_Tanggal"
+                                                              "Inputan_Tanggal"
                                                       ) {
                                                           return (
                                                               <div
