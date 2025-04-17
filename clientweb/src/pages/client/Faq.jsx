@@ -7,6 +7,7 @@ import { MainContext } from "../../Context/MainContext";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { Loader } from "../../components/Loader";
+import { data } from "autoprefixer";
 
 export const Faq = () => {
     const { checkAuth, setCheckAuth } = useContext(MainContext);
@@ -20,7 +21,7 @@ export const Faq = () => {
         return () => clearInterval(interval);
     }, [checkAuth, setCheckAuth]);
 
-    const [kontenFaq, setKontenFaq] = useState([]);
+    const [kontenFaq, setKontenFaq] = useState("");
     const [loading, setLoading] = useState(true);
     const [dataFaq, setDataFaq] = useState([]);
     useEffect(() => {
@@ -28,7 +29,8 @@ export const Faq = () => {
             .get(`${import.meta.env.VITE_ALL_BASE_URL}/client/konten`)
             .then((res) => {
                 setKontenFaq(
-                    res.data.konten.filter((data) => data.nama == "FAQ")
+                    res.data.konten.filter((data) => data.nama == "FAQ")[0]
+                        .konten
                 );
                 setDataFaq([...res.data.faq]);
                 setLoading(false);
@@ -53,26 +55,29 @@ export const Faq = () => {
                                         Ada Pertanyaan? Temukan Jawabannya!
                                     </h2>
                                     <p className="max-xs:text-sm text-base text-body-color">
-                                        {kontenFaq.length > 0
-                                            ? kontenFaq[0].konten
-                                            : ""}
+                                        {kontenFaq !== "" ? kontenFaq : ""}
                                     </p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className="grid max-xs:grid-cols-1 grid-cols-2 gap-8">
-                        {dataFaq.length > 0 ? (
-                            dataFaq.map((data, i) => {
-                                return (
-                                    <>
+                    {loading && dataFaq.length == 0 ? (
+                        <div className="grid max-xs:grid-cols-1 grid-cols-2 gap-8">
+                            <div className="col-span-2 flex justify-center">
+                                <Loader></Loader>
+                            </div>
+                        </div>
+                    ) : dataFaq.length > 0 ? (
+                        dataFaq.map((data, i) => {
+                            return (
+                                <>
+                                    <div className="grid max-xs:grid-cols-1 grid-cols-2 gap-8">
                                         <div className="w-full">
                                             <details className="group border-s-4 border-green-500 bg-gray-50 p-6 [&_summary::-webkit-details-marker]:hidden">
                                                 <summary className="flex cursor-pointer items-center justify-between gap-1.5">
                                                     <h2 className="max-xs:text-sm text-md font-medium text-gray-900">
                                                         {data.pertanyaan}
                                                     </h2>
-
                                                     <span className="shrink-0 rounded-full bg-white p-1.5 text-gray-900 sm:p-3">
                                                         <svg
                                                             xmlns="http://www.w3.org/2000/svg"
@@ -88,21 +93,22 @@ export const Faq = () => {
                                                         </svg>
                                                     </span>
                                                 </summary>
-
                                                 <p className="mt-4 text-sm leading-relaxed text-justify text-gray-700">
                                                     {data.jawaban}
                                                 </p>
                                             </details>
                                         </div>
-                                    </>
-                                );
-                            })
-                        ) : (
-                            <div className="col-span-2 flex justify-center">
-                                <Loader></Loader>
-                            </div>
-                        )}
-                    </div>
+                                    </div>
+                                </>
+                            );
+                        })
+                    ) : (
+                        <div className="flex justify-center w-full">
+                            <p className="text-sm md:text-md text-gray-500 font-normal text-center w-full">
+                                Konten Belum Ada
+                            </p>
+                        </div>
+                    )}
                 </section>
             </GuestLayout>
         </>

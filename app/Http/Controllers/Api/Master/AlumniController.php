@@ -9,6 +9,7 @@ use App\Models\Master\MasterProgramStudi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class AlumniController extends Controller
 {
@@ -54,6 +55,7 @@ class AlumniController extends Controller
         $validator = Validator::make($request->all(), [
             'nama' => 'required',
             'id_program_studi.value' => 'required',
+            'profile' => 'required',
             'jenis_kelamin' => 'required',
             'nim' => 'required',
             'nik' => 'required',
@@ -78,6 +80,12 @@ class AlumniController extends Controller
             $new = new MasterAlumni();
             $new->nama = $request->nama;
             $new->id_program_studi = $request->id_program_studi['value'];
+
+            $logo = $request->file('profile');
+            $fileName = $logo->getClientOriginalName();
+            $logo->storeAs('public/Alumni/', $fileName);
+            $new->profile = $fileName;
+
             $new->jenis_kelamin = $request->jenis_kelamin;
             $new->nim = $request->nim;
             $new->nik = $request->nik;
@@ -131,6 +139,15 @@ class AlumniController extends Controller
 
             $data->nama = $request->nama;
             $data->id_program_studi = $request->id_program_studi['value'];
+
+            if ($request->profile != null || $request->profile != '') {
+                Storage::delete('public/Alumni/' . $data->profile);
+                $logo = $request->file('profile');
+                $fileName = $logo->getClientOriginalName();
+                $logo->storeAs('public/Alumni/', $fileName);
+                $data->profile = $fileName;
+            }
+
             $data->jenis_kelamin = $request->jenis_kelamin;
             $data->nim = $request->nim;
             $data->nik = $request->nik;
@@ -178,6 +195,7 @@ class AlumniController extends Controller
         DB::beginTransaction();
         try {
             $data = MasterAlumni::findOrFail($id);
+            Storage::delete('public/Alumni/' . $data->profile);
             $data->delete();
             DB::commit();
             return response()->json(['success' => 'Berhasil Menghapus Data'], 200);

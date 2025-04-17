@@ -26,9 +26,10 @@ export const Home = () => {
         }
     }, [dataProfile]);
 
-    const [kontenHeader, setKontenHeader] = useState([]);
-    let [gambarHeader, setGambarHeader] = useState([]);
-    let [tentangTracer, setTentangTracer] = useState([]);
+    const [kontenHeader, setKontenHeader] = useState("");
+    let [gambarHeader, setGambarHeader] = useState("");
+    let [tentangTracer, setTentangTracer] = useState("");
+    let [tentangUniversitas, setTentangUniversitas] = useState("");
 
     const [intervalTiming, setIntervalTiming] = useState(1000);
     useEffect(() => {
@@ -53,13 +54,25 @@ export const Home = () => {
     }, []);
 
     useEffect(() => {
-        setKontenHeader(dataKonten.filter((data) => data.nama === "Header"));
-        setGambarHeader(
-            dataKonten.filter((data) => data.nama === "Gambar Header")
-        );
-        setTentangTracer(
-            dataKonten.filter((data) => data.nama === "Tentang Tracer Study")
-        );
+        if (dataKonten.length > 0) {
+            setKontenHeader(
+                dataKonten.filter((data) => data.nama === "Header")[0].konten
+            );
+            setGambarHeader(
+                dataKonten.filter((data) => data.nama === "Gambar Header")[0]
+                    .gambar
+            );
+            setTentangTracer(
+                dataKonten.filter(
+                    (data) => data.nama === "Tentang Tracer Study"
+                )[0].konten
+            );
+            setTentangUniversitas(
+                dataKonten.filter(
+                    (data) => data.nama === "Tentang Universitas"
+                )[0].konten
+            );
+        }
     }, [dataKonten, dataLowongan]);
 
     return (
@@ -81,9 +94,7 @@ export const Home = () => {
                                 </h1>
                             </div>
                             <p className="max-w-2xl max-lg:text-center mb-6 font-light text-gray-500 lg:mb-8 md:text-lg">
-                                {kontenHeader.length > 0
-                                    ? kontenHeader[0].konten
-                                    : ``}
+                                {kontenHeader !== "" ? kontenHeader : ``}
                             </p>
                             <div className="max-w-2xl flex max-lg:justify-center">
                                 <Link
@@ -111,17 +122,31 @@ export const Home = () => {
                         <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">
                             <img
                                 src={
-                                    gambarHeader.length > 0
+                                    gambarHeader !== ""
                                         ? `${
                                               import.meta.env
                                                   .VITE_AUTH_MAIN_BASE_URL
-                                          }/storage/Konten/Gambar/${
-                                              gambarHeader[0].gambar
-                                          }`
+                                          }/storage/Konten/Gambar/${gambarHeader}`
                                         : ""
                                 }
                                 alt="mockup"
                             />
+                        </div>
+                    </div>
+                </section>
+                <section className="bg-white">
+                    <div className="mx-auto max-w-screen-xl px-8 pt-4 sm:px-6 sm:pt-12 lg:px-8 lg:pt-16">
+                        <div className="mx-auto max-w-lg text-center">
+                            <h2 className="text-xl md:text-3xl font-bold sm:text-4xl text-black">
+                                Tentang Universitas
+                            </h2>
+                        </div>
+                        <div className="flex justify-center mt-6">
+                            <p className="text-sm md:text-md text-gray-500 font-normal text-justify">
+                                {tentangUniversitas !== ""
+                                    ? tentangUniversitas
+                                    : ``}
+                            </p>
                         </div>
                     </div>
                 </section>
@@ -134,9 +159,7 @@ export const Home = () => {
                         </div>
                         <div className="flex justify-center mt-6">
                             <p className="text-sm md:text-md text-gray-500 font-normal text-justify">
-                                {tentangTracer.length > 0
-                                    ? tentangTracer[0].konten
-                                    : ``}
+                                {tentangTracer !== "" ? tentangTracer : ``}
                             </p>
                         </div>
                     </div>
@@ -148,26 +171,42 @@ export const Home = () => {
                                 Lowongan Pekerjaan
                             </h2>
                         </div>
-                        <div className="mt-8 hidden md:grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-                            {dataLowongan.map((val, i) => {
-                                return (
-                                    <CardLowongan
-                                        data={val}
-                                        key={i}
-                                    ></CardLowongan>
-                                );
-                            })}
-                        </div>
-                        <div className="mt-8 max-md:grid hidden grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-                            {dataLowongan.slice(0, 3).map((val, i) => {
-                                return (
-                                    <CardLowongan
-                                        data={val}
-                                        key={i}
-                                    ></CardLowongan>
-                                );
-                            })}
-                        </div>
+                        {dataLowongan.length > 0 ? (
+                            <div className="mt-8 hidden md:grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                                {dataLowongan.map((val, i) => {
+                                    return (
+                                        <CardLowongan
+                                            data={val}
+                                            key={i}
+                                        ></CardLowongan>
+                                    );
+                                })}
+                            </div>
+                        ) : (
+                            <div className="flex justify-center mt-6">
+                                <p className="text-sm md:text-md text-gray-500 font-normal text-center w-full">
+                                    Konten Lowongan Belum Ada
+                                </p>
+                            </div>
+                        )}
+                        {dataLowongan.length > 0 ? (
+                            <div className="mt-8 max-md:grid hidden grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                                {dataLowongan.slice(0, 3).map((val, i) => {
+                                    return (
+                                        <CardLowongan
+                                            data={val}
+                                            key={i}
+                                        ></CardLowongan>
+                                    );
+                                })}
+                            </div>
+                        ) : (
+                            <div className="max-md:flex hidden justify-center mt-6">
+                                <p className="text-sm md:text-md text-gray-500 font-normal text-center w-full">
+                                    Konten Lowongan Belum Ada
+                                </p>
+                            </div>
+                        )}
                         <div className="mt-12 text-center">
                             <Link
                                 to={"/lowongan"}

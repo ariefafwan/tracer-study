@@ -44,7 +44,7 @@ export const Lowongan = () => {
         total: 1,
     });
     const [loading, setLoading] = useState(true);
-    const [kontenLowongan, setKontenLowongan] = useState([]);
+    const [kontenLowongan, setKontenLowongan] = useState("");
     const [filterTanggalDari, setFilterTanggalDari] = useState("");
     const [filterTanggalKe, setFilterTanggalKe] = useState("");
     const [reloadTable, setReloadTable] = useState(false);
@@ -121,7 +121,7 @@ export const Lowongan = () => {
                 setKontenLowongan(
                     res.data.konten.filter(
                         (data) => data.nama == "Lowongan Pekerjaan"
-                    )
+                    )[0].konten
                 );
             })
             .catch((error) => {
@@ -139,12 +139,6 @@ export const Lowongan = () => {
         }
     };
 
-    // useEffect(() => {
-    //     if (filterProgramStudi.length > 0) {
-    //         console.log(filterProgramStudi);
-    //     }
-    // }, [filterProgramStudi]);
-
     return (
         <>
             <Head title="Lowongan Pekerjaan" />
@@ -157,9 +151,7 @@ export const Lowongan = () => {
                             </h2>
 
                             <p className="mt-4 max-lg:text-sm max-lg:text-center max-lg:max-w-full max-w-md text-gray-500">
-                                {kontenLowongan.length > 0
-                                    ? kontenLowongan[0].konten
-                                    : ""}
+                                {kontenLowongan !== "" ? kontenLowongan : ""}
                             </p>
                         </header>
 
@@ -501,7 +493,7 @@ export const Lowongan = () => {
                                         <div className="lg:col-span-3 sm:col-span-2 flex justify-center w-full h-full">
                                             <Loader></Loader>
                                         </div>
-                                    ) : (
+                                    ) : dataLowongan.length > 0 ? (
                                         dataLowongan.data.map((val, i) => {
                                             return (
                                                 <CardLowongan
@@ -510,6 +502,12 @@ export const Lowongan = () => {
                                                 ></CardLowongan>
                                             );
                                         })
+                                    ) : (
+                                        <div className="flex justify-center w-full h-full col-span-3">
+                                            <p className="text-center text-xl text-gray-500 font-normal">
+                                                Tidak ada lowongan tersedia
+                                            </p>
+                                        </div>
                                     )}
                                 </div>
                             </div>

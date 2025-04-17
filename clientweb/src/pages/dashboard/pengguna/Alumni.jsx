@@ -25,6 +25,7 @@ export const Alumni = () => {
             label: "",
             id_fakultas: "",
         },
+        profile: "",
         jenis_kelamin: "Laki-Laki",
         nim: "",
         nik: "",
@@ -221,6 +222,7 @@ export const Alumni = () => {
                     label: "",
                     id_fakultas: "",
                 },
+                profile: "",
                 jenis_kelamin: "Laki-Laki",
                 nim: "",
                 nik: "",
@@ -270,6 +272,7 @@ export const Alumni = () => {
                                 headers: {
                                     Authorization:
                                         "Bearer " + Cookies.get("token"),
+                                    "Content-Type": "multipart/form-data",
                                 },
                             }
                         )
@@ -305,6 +308,7 @@ export const Alumni = () => {
                                 headers: {
                                     Authorization:
                                         "Bearer " + Cookies.get("token"),
+                                    "Content-Type": "multipart/form-data",
                                 },
                             }
                         )
@@ -343,6 +347,7 @@ export const Alumni = () => {
                 {
                     headers: {
                         Authorization: "Bearer " + Cookies.get("token"),
+                        "Content-Type": "multipart/form-data",
                     },
                 }
             )
@@ -359,6 +364,7 @@ export const Alumni = () => {
                         label: res.data.data_prodi.nama,
                         id_fakultas: res.data.data_prodi.id_fakultas,
                     },
+                    profile: "",
                     jenis_kelamin: res.data.jenis_kelamin,
                     nim: res.data.nim,
                     nik: res.data.nik,
@@ -511,6 +517,7 @@ export const Alumni = () => {
                             head={[
                                 "Fakultas",
                                 "Program Studi",
+                                "Foto",
                                 "Nama",
                                 "NIM",
                                 "Status",
@@ -651,6 +658,25 @@ export const Alumni = () => {
                                                     {all.data_prodi.nama}
                                                 </td>
                                                 <td className="px-6 py-4 text-black">
+                                                    <img
+                                                        className="w-10 h-10 p-1 rounded-full ring-2 ring-gray-300"
+                                                        src={
+                                                            all.profile !==
+                                                                null ||
+                                                            all.profile !== ""
+                                                                ? `${
+                                                                      import.meta
+                                                                          .env
+                                                                          .VITE_AUTH_MAIN_BASE_URL
+                                                                  }/storage/Alumni/${
+                                                                      all.profile
+                                                                  }`
+                                                                : "/profil_img.jpg"
+                                                        }
+                                                        alt="Bordered avatar"
+                                                    />
+                                                </td>
+                                                <td className="px-6 py-4 text-black">
                                                     {all.nama}
                                                 </td>
                                                 <td className="px-6 py-4 text-black">
@@ -731,7 +757,7 @@ export const Alumni = () => {
                                 ) : (
                                     <tr className="bg-white border-b">
                                         <td
-                                            colSpan={7}
+                                            colSpan={8}
                                             className="text-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                                         >
                                             <div className="flex w-full justify-center">
@@ -743,7 +769,7 @@ export const Alumni = () => {
                             ) : (
                                 <tr className="bg-white border-b">
                                     <td
-                                        colSpan={7}
+                                        colSpan={8}
                                         className="text-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                                     >
                                         {loader == true ? (
@@ -835,6 +861,30 @@ export const Alumni = () => {
                                 options={selectProdi}
                                 isDisabled={selectFakultas.value == ""}
                                 placeholder="Pilih Program Studi"
+                            />
+                        </div>
+                        <div className="w-full col-span-2 text-black">
+                            <label
+                                htmlFor="profile"
+                                className="block mb-2 text-sm font-medium text-gray-900"
+                            >
+                                Foto
+                                {headerModal == "Tambah Data"
+                                    ? ""
+                                    : " (Optinal Untuk di Update)"}
+                            </label>
+                            <input
+                                type="file"
+                                id="profile"
+                                onChange={(e) =>
+                                    setAlumniForm({
+                                        ...alumniForm,
+                                        profile: e.target.files[0],
+                                    })
+                                }
+                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
+                                placeholder="Foto Alumni.."
+                                required={headerModal == "Tambah Data"}
                             />
                         </div>
                         <div className="w-full col-span-2 text-black">

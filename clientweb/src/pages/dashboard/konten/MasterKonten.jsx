@@ -253,57 +253,57 @@ export const MasterKonten = () => {
             });
     };
 
-    const handleDelete = (id) => {
-        Swal.fire({
-            title: "Kamu Yakin?",
-            text: "Data Akan Dihapus!",
-            icon: "info",
-            showCancelButton: true,
-            reverseButtons: true,
-            confirmButtonText: "Ya!",
-            cancelButtonText: "Batal",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({
-                    title: "Now Loading!",
-                    didOpen: () => {
-                        Swal.showLoading();
-                    },
-                });
-                axios
-                    .delete(
-                        `${
-                            import.meta.env.VITE_ALL_BASE_URL
-                        }/konten/konten/delete/${id}`,
-                        {
-                            headers: {
-                                Authorization: "Bearer " + Cookies.get("token"),
-                            },
-                        }
-                    )
-                    .then((res) => {
-                        setReloadTable(true);
-                        Swal.fire({
-                            title: "Success!",
-                            text: "Data Berhasil Dihapus.",
-                            icon: "success",
-                        });
-                    })
-                    .catch((error) => {
-                        if (error.response.status == 403) {
-                            Cookies.remove("token");
-                            navigate("/");
-                        } else {
-                            Swal.fire({
-                                title: "Error!",
-                                text: error.response.data.error,
-                                icon: "error",
-                            });
-                        }
-                    });
-            }
-        });
-    };
+    // const handleDelete = (id) => {
+    //     Swal.fire({
+    //         title: "Kamu Yakin?",
+    //         text: "Data Akan Dihapus!",
+    //         icon: "info",
+    //         showCancelButton: true,
+    //         reverseButtons: true,
+    //         confirmButtonText: "Ya!",
+    //         cancelButtonText: "Batal",
+    //     }).then((result) => {
+    //         if (result.isConfirmed) {
+    //             Swal.fire({
+    //                 title: "Now Loading!",
+    //                 didOpen: () => {
+    //                     Swal.showLoading();
+    //                 },
+    //             });
+    //             axios
+    //                 .delete(
+    //                     `${
+    //                         import.meta.env.VITE_ALL_BASE_URL
+    //                     }/konten/konten/delete/${id}`,
+    //                     {
+    //                         headers: {
+    //                             Authorization: "Bearer " + Cookies.get("token"),
+    //                         },
+    //                     }
+    //                 )
+    //                 .then((res) => {
+    //                     setReloadTable(true);
+    //                     Swal.fire({
+    //                         title: "Success!",
+    //                         text: "Data Berhasil Dihapus.",
+    //                         icon: "success",
+    //                     });
+    //                 })
+    //                 .catch((error) => {
+    //                     if (error.response.status == 403) {
+    //                         Cookies.remove("token");
+    //                         navigate("/");
+    //                     } else {
+    //                         Swal.fire({
+    //                             title: "Error!",
+    //                             text: error.response.data.error,
+    //                             icon: "error",
+    //                         });
+    //                     }
+    //                 });
+    //         }
+    //     });
+    // };
 
     return (
         <>
@@ -349,13 +349,13 @@ export const MasterKonten = () => {
                                                                 editData(all.id)
                                                             }
                                                         ></ButtonEdit>
-                                                        <ButtonDelete
+                                                        {/* <ButtonDelete
                                                             click={() =>
                                                                 handleDelete(
                                                                     all.id
                                                                 )
                                                             }
-                                                        ></ButtonDelete>
+                                                        ></ButtonDelete> */}
                                                     </div>
                                                 </td>
                                             </tr>

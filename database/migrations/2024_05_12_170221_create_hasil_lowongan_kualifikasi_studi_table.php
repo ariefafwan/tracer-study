@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('hasil_lowongan_kualifikasi_studi', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('id_hasil_lowongan')->constrained('hasil_lowongan')->references('id')->onDelete('restrict')->onUpdate('cascade');
+            $table->foreignUuid('id_hasil_lowongan')->constrained('hasil_lowongan')->references('id')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignUuid('id_program_studi')->nullable()->constrained('master_program_studi')->references('id')->onDelete('restrict')->onUpdate('cascade');
             $table->string('lainnya')->nullable();
             $table->timestamps();
